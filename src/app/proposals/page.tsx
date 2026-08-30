@@ -188,122 +188,84 @@ function ProposalsContent() {
         </div>
       </div>
 
-      {/* Filter & Search Bar Card */}
-      <div className="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200/80 shadow-sm space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {/* Search Input */}
-          <div className="relative">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search name, phone, location..."
-              className="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-rose-500 outline-none"
-            />
-          </div>
+      {/* Filter Controls Horizontal Bar */}
+      <div className="bg-white p-3 sm:p-4 rounded-3xl border border-slate-200/80 shadow-sm flex flex-wrap items-center justify-between gap-2 text-xs">
+        <div className="flex flex-wrap items-center gap-2 flex-1">
+          {/* Status Filter Dropdown (Compact) */}
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+            className="py-1.5 px-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-rose-500 outline-none font-medium text-slate-700 max-w-[140px] xs:max-w-[160px] sm:max-w-none"
+          >
+            <option value="All">All Statuses</option>
+            <option value="New">New</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Information Pending">Info Pending</option>
+            <option value="Horoscope Pending">Horoscope Pending</option>
+            <option value="Under Consideration">Under Consideration</option>
+            <option value="Meeting Planned">Meeting Planned</option>
+            <option value="Shortlisted">Shortlisted</option>
+            <option value="On Hold">On Hold</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Closed">Closed</option>
+          </select>
 
-          {/* Status Filter */}
-          <div>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-rose-500 outline-none"
-            >
-              <option value="All">All Proposal Statuses</option>
-              <option value="New">New</option>
-              <option value="Contacted">Contacted</option>
-              <option value="Information Pending">Information Pending</option>
-              <option value="Horoscope Pending">Horoscope Pending</option>
-              <option value="Under Consideration">Under Consideration</option>
-              <option value="Meeting Planned">Meeting Planned</option>
-              <option value="Shortlisted">Shortlisted</option>
-              <option value="On Hold">On Hold</option>
-              <option value="Rejected">Rejected</option>
-              <option value="Closed">Closed</option>
-            </select>
-          </div>
+          {/* Horoscope Status Filter Dropdown (Compact) */}
+          <select
+            value={horoscopeFilter}
+            onChange={(e) => setHoroscopeFilter(e.target.value)}
+            className="py-1.5 px-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-rose-500 outline-none font-medium text-slate-700 max-w-[140px] xs:max-w-[160px] sm:max-w-none"
+          >
+            <option value="All">All Horoscope</option>
+            <option value="Matched">Matched</option>
+            <option value="Partially Matched">Partially Matched</option>
+            <option value="Checking">Checking</option>
+            <option value="Pending">Pending</option>
+            <option value="Not Matched">Not Matched</option>
+          </select>
 
-          {/* Horoscope Status Filter */}
-          <div>
-            <select
-              value={horoscopeFilter}
-              onChange={(e) => setHoroscopeFilter(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-rose-500 outline-none"
-            >
-              <option value="All">All Horoscope Statuses</option>
-              <option value="Matched">Matched</option>
-              <option value="Partially Matched">Partially Matched</option>
-              <option value="Checking">Checking</option>
-              <option value="Pending">Pending</option>
-              <option value="Not Matched">Not Matched</option>
-              <option value="Not Provided">Not Provided</option>
-            </select>
-          </div>
+          {/* Shortlist Toggle Button */}
+          <button
+            onClick={() => setShortlistedFilter(!shortlistedFilter)}
+            className={`flex items-center gap-1.5 py-1.5 px-2.5 rounded-xl border transition-colors text-xs ${
+              shortlistedFilter
+                ? 'bg-amber-500 text-white border-amber-600 font-semibold'
+                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+            }`}
+          >
+            <Star className={`w-3.5 h-3.5 ${shortlistedFilter ? 'fill-current' : ''}`} />
+            <span>Shortlisted</span>
+          </button>
 
-          {/* Matrimony Source Filter */}
-          <div>
-            <select
-              value={sourceFilter}
-              onChange={(e) => setSourceFilter(e.target.value)}
-              className="w-full px-3 py-2 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-rose-500 outline-none"
+          {(statusFilter !== 'All' || horoscopeFilter !== 'All' || sourceFilter !== 'All' || shortlistedFilter) && (
+            <button
+              onClick={() => {
+                setStatusFilter('All');
+                setHoroscopeFilter('All');
+                setSourceFilter('All');
+                setShortlistedFilter(false);
+              }}
+              className="text-slate-400 hover:text-rose-600 font-medium py-1 px-1.5 text-xs"
             >
-              <option value="All">All Matrimony Sources</option>
-              {sources.map((src) => (
-                <option key={src.id} value={src.name}>
-                  {src.name}
-                </option>
-              ))}
-            </select>
-          </div>
+              Reset
+            </button>
+          )}
         </div>
 
-        {/* Sorting & Shortlist Toggle Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100 text-xs">
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => setShortlistedFilter(!shortlistedFilter)}
-              className={`flex items-center gap-1.5 py-1.5 px-3 rounded-xl border transition-colors ${
-                shortlistedFilter
-                  ? 'bg-amber-500 text-white border-amber-600 font-semibold'
-                  : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-              }`}
-            >
-              <Star className={`w-3.5 h-3.5 ${shortlistedFilter ? 'fill-current' : ''}`} />
-              <span>Shortlisted Only</span>
-            </button>
-
-            {(search || statusFilter !== 'All' || horoscopeFilter !== 'All' || sourceFilter !== 'All' || shortlistedFilter) && (
-              <button
-                onClick={() => {
-                  setSearch('');
-                  setStatusFilter('All');
-                  setHoroscopeFilter('All');
-                  setSourceFilter('All');
-                  setShortlistedFilter(false);
-                }}
-                className="text-slate-400 hover:text-rose-600 font-medium"
-              >
-                Reset Filters
-              </button>
-            )}
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="text-slate-400">Sort by:</span>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none"
-            >
-              <option value="recently_updated">Recently Updated</option>
-              <option value="recently_added">Recently Added</option>
-              <option value="name">Name</option>
-              <option value="age">Age</option>
-              <option value="next_followup">Next Follow-up</option>
-              <option value="status">Status</option>
-            </select>
-          </div>
+        {/* Sort By Dropdown */}
+        <div className="flex items-center gap-1 text-xs">
+          <span className="text-slate-400">Sort:</span>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as any)}
+            className="py-1.5 px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none font-medium text-slate-700"
+          >
+            <option value="recently_updated">Recently Updated</option>
+            <option value="recently_added">Recently Added</option>
+            <option value="name">Name</option>
+            <option value="age">Age</option>
+            <option value="status">Status</option>
+          </select>
         </div>
       </div>
 
