@@ -394,13 +394,21 @@ function ProposalsContent() {
                     >
                       {prop.status}
                     </span>
-                    <span
-                      className={`px-2 py-0.5 rounded-full text-[11px] font-medium border ${getHoroscopeStatusBadgeClass(
-                        horoscope.status
-                      )}`}
-                    >
-                      Horo: {horoscope.status}
-                    </span>
+                    {prop.horoscopeMatch && (
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-[11px] font-bold border ${
+                          prop.horoscopeMatch === 'Very Good'
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+                            : prop.horoscopeMatch === 'OK'
+                            ? 'bg-amber-50 text-amber-700 border-amber-200'
+                            : prop.horoscopeMatch === 'Not ok'
+                            ? 'bg-rose-50 text-rose-700 border-rose-200'
+                            : 'bg-slate-50 text-slate-600 border-slate-200'
+                        }`}
+                      >
+                        Match: {prop.horoscopeMatch}
+                      </span>
+                    )}
                   </div>
 
                   {/* Platform & Date */}

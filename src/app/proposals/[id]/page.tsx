@@ -1014,6 +1014,15 @@ export default function ProposalDetailPage() {
                 <div className="pt-4 border-t border-slate-100 space-y-3">
                   <h4 className="text-xs font-bold text-slate-800">Horoscope Document / Chart Image</h4>
 
+                  {proposal.horoscopeImageUrl && (
+                    <div className="p-3 bg-indigo-50/60 rounded-2xl border border-indigo-100 space-y-2">
+                      <p className="text-xs font-bold text-indigo-900">Horoscope Chart Image:</p>
+                      <div className="max-w-md max-h-64 rounded-xl overflow-hidden border border-indigo-200 shadow-sm bg-white p-1">
+                        <img src={proposal.horoscopeImageUrl} alt="Horoscope Chart" className="w-full h-full object-contain max-h-64 rounded-lg" />
+                      </div>
+                    </div>
+                  )}
+
                   {horoscope.documentName && horoscope.documentDataUrl ? (
                     <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between gap-4 text-xs">
                       <div className="flex items-center gap-3">

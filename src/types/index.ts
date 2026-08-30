@@ -194,6 +194,8 @@ export interface Proposal {
   rejectionReason?: RejectionReason;
   rejectionNotes?: string;
   photoUrl?: string;
+  horoscopeImageUrl?: string;
+  horoscopeMatch?: 'Very Good' | 'OK' | 'Not ok' | 'Pending';
   shortlisted: boolean;
   createdAt: string;
   updatedAt: string;

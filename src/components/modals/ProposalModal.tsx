@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { X, User, GraduationCap, Globe, Users, Phone, Shield, Sparkles } from 'lucide-react';
+import { X, User, GraduationCap, Globe, Users, Phone, Shield, Sparkles, Upload } from 'lucide-react';
 import { Proposal, ProposalStatus, ContactRelationship } from '../../types';
 import { checkDuplicate, getSources } from '../../services/storage';
 import { DuplicateAlertModal } from './DuplicateAlertModal';
@@ -364,15 +364,47 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                 </div>
               </div>
 
-              <div>
-                <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">Photo Image URL (Optional)</label>
-                <input
-                  type="text"
-                  value={formData.photoUrl || ''}
-                  onChange={(e) => handleInputChange('photoUrl', e.target.value)}
-                  placeholder="https://images.unsplash.com/..."
-                  className="w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-slate-200 rounded-xl focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 outline-none"
-                />
+              {/* Upload Candidate Photo (Boy / Girl Image) */}
+              <div className="p-3 bg-slate-50 border border-slate-200/80 rounded-2xl">
+                <label className="block text-[11px] sm:text-xs font-semibold text-slate-800 mb-1.5 flex items-center justify-between">
+                  <span>Candidate Photo (Boy / Girl Image Upload)</span>
+                  {formData.photoUrl && <span className="text-[10px] text-emerald-600 font-bold">✓ Image Uploaded</span>}
+                </label>
+                <div className="flex items-center gap-3">
+                  {formData.photoUrl ? (
+                    <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-slate-200 flex-shrink-0 bg-slate-100">
+                      <img src={formData.photoUrl} alt="Candidate Photo" className="w-full h-full object-cover" />
+                      <button
+                        type="button"
+                        onClick={() => handleInputChange('photoUrl', '')}
+                        className="absolute inset-0 bg-black/40 text-white flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity text-xs font-bold"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="w-12 h-12 rounded-xl border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400 bg-white flex-shrink-0">
+                      <Upload className="w-5 h-5" />
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                          if (event.target?.result) {
+                            handleInputChange('photoUrl', event.target.result as string);
+                          }
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }}
+                    className="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100 cursor-pointer"
+                  />
+                </div>
               </div>
             </div>
           )}
@@ -499,6 +531,63 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                     placeholder="https://..."
                     className="w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-slate-200 rounded-xl focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 outline-none"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">Horoscope Match</label>
+                  <select
+                    value={formData.horoscopeMatch || 'Pending'}
+                    onChange={(e) => handleInputChange('horoscopeMatch', e.target.value as any)}
+                    className="w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-slate-200 rounded-xl focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 outline-none font-semibold text-slate-800"
+                  >
+                    <option value="Pending">Pending</option>
+                    <option value="Very Good">Very Good</option>
+                    <option value="OK">OK</option>
+                    <option value="Not ok">Not ok</option>
+                  </select>
+                </div>
+
+                {/* Upload Horoscope Chart Image */}
+                <div className="p-3 bg-indigo-50/50 border border-indigo-100 rounded-2xl sm:col-span-2">
+                  <label className="block text-[11px] sm:text-xs font-semibold text-indigo-900 mb-1.5 flex items-center justify-between">
+                    <span>Horoscope Box / Chart Image Upload</span>
+                    {formData.horoscopeImageUrl && <span className="text-[10px] text-indigo-600 font-bold">✓ Chart Uploaded</span>}
+                  </label>
+                  <div className="flex items-center gap-3">
+                    {formData.horoscopeImageUrl ? (
+                      <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-indigo-200 flex-shrink-0 bg-white">
+                        <img src={formData.horoscopeImageUrl} alt="Horoscope Chart" className="w-full h-full object-cover" />
+                        <button
+                          type="button"
+                          onClick={() => handleInputChange('horoscopeImageUrl', '')}
+                          className="absolute inset-0 bg-black/40 text-white flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity text-xs font-bold"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="w-12 h-12 rounded-xl border-2 border-dashed border-indigo-300 flex items-center justify-center text-indigo-400 bg-white flex-shrink-0">
+                        <Upload className="w-5 h-5" />
+                      </div>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = (event) => {
+                            if (event.target?.result) {
+                              handleInputChange('horoscopeImageUrl', event.target.result as string);
+                            }
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                      className="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-indigo-100 file:text-indigo-700 hover:file:bg-indigo-200 cursor-pointer"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
