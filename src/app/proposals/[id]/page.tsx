@@ -30,6 +30,8 @@ import {
   CheckCircle2,
   XCircle,
   ExternalLink,
+  ChevronDown,
+  Check,
 } from 'lucide-react';
 import {
   getProposal,
@@ -84,12 +86,26 @@ export default function ProposalDetailPage() {
 
   // Modals state
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const statusDropdownRef = React.useRef<HTMLDivElement>(null);
+
   const [editProposalOpen, setEditProposalOpen] = useState(false);
   const [commModalOpen, setCommModalOpen] = useState(false);
   const [noteModalOpen, setNoteModalOpen] = useState(false);
   const [editingNote, setEditingNote] = useState<Note | undefined>(undefined);
   const [followupModalOpen, setFollowupModalOpen] = useState(false);
   const [rejectionModalOpen, setRejectionModalOpen] = useState(false);
+
+  // Close status popover when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target as Node)) {
+        setStatusDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Add Contact Form inline state
   const [addContactOpen, setAddContactOpen] = useState(false);
@@ -240,108 +256,136 @@ export default function ProposalDetailPage() {
         </button>
       </div>
 
-      {/* Main Header Banner Card */}
-      <div className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/80 shadow-sm space-y-5">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
-          <div className="flex items-center gap-4 sm:gap-5">
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-rose-100 text-rose-700 font-bold text-2xl sm:text-3xl flex items-center justify-center overflow-hidden shadow-inner flex-shrink-0 border-2 border-rose-200">
-              {proposal.photoUrl ? (
-                <img src={proposal.photoUrl} alt={proposal.fullName} className="w-full h-full object-cover" />
-              ) : (
-                proposal.fullName.charAt(0)
-              )}
+      {/* Main Header Banner Card (Full Width Utilization) */}
+      <div className="bg-white rounded-3xl p-4 sm:p-6 border border-slate-200/80 shadow-sm space-y-4">
+        {/* Profile Info Section */}
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-rose-100 text-rose-700 font-bold text-2xl sm:text-3xl flex items-center justify-center overflow-hidden shadow-inner flex-shrink-0 border-2 border-rose-200">
+            {proposal.photoUrl ? (
+              <img src={proposal.photoUrl} alt={proposal.fullName} className="w-full h-full object-cover" />
+            ) : (
+              proposal.fullName.charAt(0)
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-2 mb-1">
+              <h1 className="font-serif font-bold text-xl sm:text-2xl text-slate-900 truncate">{proposal.fullName}</h1>
+              <button
+                onClick={handleToggleShortlist}
+                className={`p-1.5 rounded-xl border transition-all flex-shrink-0 ${
+                  proposal.shortlisted
+                    ? 'bg-amber-100 text-amber-600 border-amber-300'
+                    : 'text-slate-300 border-slate-200 hover:text-amber-500'
+                }`}
+                title={proposal.shortlisted ? 'Shortlisted' : 'Add to Shortlist'}
+              >
+                <Star className={`w-4 h-4 ${proposal.shortlisted ? 'fill-amber-500' : ''}`} />
+              </button>
             </div>
 
-            <div>
-              <div className="flex flex-wrap items-center gap-2 mb-1">
-                <h1 className="font-serif font-bold text-xl sm:text-2xl text-slate-900">{proposal.fullName}</h1>
-                <button
-                  onClick={handleToggleShortlist}
-                  className={`p-1.5 rounded-xl border transition-all ${
-                    proposal.shortlisted
-                      ? 'bg-amber-100 text-amber-600 border-amber-300'
-                      : 'text-slate-300 border-slate-200 hover:text-amber-500'
-                  }`}
-                  title={proposal.shortlisted ? 'Shortlisted' : 'Add to Shortlist'}
-                >
-                  <Star className={`w-4 h-4 ${proposal.shortlisted ? 'fill-amber-500' : ''}`} />
-                </button>
+            <p className="text-xs sm:text-sm text-slate-600 font-medium truncate">
+              {proposal.age} yrs • {proposal.location} • {proposal.profession}
+            </p>
+            <p className="text-[11px] text-slate-400 mt-0.5 truncate">
+              {proposal.matrimonyPlatform} {proposal.profileId ? `(Profile ID: ${proposal.profileId})` : ''}
+            </p>
+          </div>
+        </div>
+
+        {/* Action Control Bar (Full-Width Responsive 5-Column Grid - Zero Whitespace Gap) */}
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-3 border-t border-slate-100 w-full text-xs">
+          {/* 1. Custom Status Popover Dropdown (Zero Native Browser Picker) */}
+          <div className="relative col-span-2 sm:col-span-1" ref={statusDropdownRef}>
+            <button
+              type="button"
+              onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
+              className={`w-full py-2 px-3 rounded-xl text-xs font-bold border flex items-center justify-between gap-1.5 transition-all shadow-xs ${getStatusBadgeClass(
+                proposal.status
+              )}`}
+            >
+              <span className="truncate">{proposal.status === 'Information Pending' ? 'Info Pending' : proposal.status}</span>
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${statusDropdownOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {statusDropdownOpen && (
+              <div className="absolute top-full left-0 right-0 sm:w-48 mt-1 bg-white rounded-2xl shadow-2xl border border-slate-200/90 p-1.5 z-50 space-y-0.5 max-h-64 overflow-y-auto animate-scale-in">
+                {[
+                  'New',
+                  'Contacted',
+                  'Information Pending',
+                  'Horoscope Pending',
+                  'Under Consideration',
+                  'Meeting Planned',
+                  'Shortlisted',
+                  'On Hold',
+                  'Rejected',
+                  'Closed',
+                ].map((st) => (
+                  <button
+                    key={st}
+                    type="button"
+                    onClick={() => {
+                      handleStatusChange(st as ProposalStatus);
+                      setStatusDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-3 py-1.5 rounded-xl text-xs font-medium transition-colors flex items-center justify-between ${
+                      proposal.status === st
+                        ? 'bg-rose-50 text-rose-700 font-bold'
+                        : 'text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    <span>{st === 'Information Pending' ? 'Info Pending' : st}</span>
+                    {proposal.status === st && <Check className="w-3.5 h-3.5 text-rose-600" />}
+                  </button>
+                ))}
               </div>
-
-              <p className="text-xs sm:text-sm text-slate-600 font-medium">
-                {proposal.age} years • {proposal.location} • {proposal.profession}
-              </p>
-              <p className="text-xs text-slate-400 mt-0.5">
-                {proposal.matrimonyPlatform} (Profile ID: {proposal.profileId})
-              </p>
-            </div>
+            )}
           </div>
 
-          {/* Right Action Controls */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-            {/* Status Dropdown */}
-            <div className="flex flex-col gap-1">
-              <span className="text-[10px] font-semibold uppercase text-slate-400 tracking-wider">Current Status</span>
-              <select
-                value={proposal.status}
-                onChange={(e) => handleStatusChange(e.target.value as ProposalStatus)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-bold border outline-none cursor-pointer shadow-xs ${getStatusBadgeClass(
-                  proposal.status
-                )}`}
-              >
-                <option value="New" className="bg-white text-slate-900 font-medium">New</option>
-                <option value="Contacted" className="bg-white text-slate-900 font-medium">Contacted</option>
-                <option value="Information Pending" className="bg-white text-slate-900 font-medium">Info Pending</option>
-                <option value="Horoscope Pending" className="bg-white text-slate-900 font-medium">Horoscope Pending</option>
-                <option value="Under Consideration" className="bg-white text-slate-900 font-medium">Under Consideration</option>
-                <option value="Meeting Planned" className="bg-white text-slate-900 font-medium">Meeting Planned</option>
-                <option value="Shortlisted" className="bg-white text-slate-900 font-medium">Shortlisted</option>
-                <option value="On Hold" className="bg-white text-slate-900 font-medium">On Hold</option>
-                <option value="Rejected" className="bg-white text-slate-900 font-medium">Rejected</option>
-                <option value="Closed" className="bg-white text-slate-900 font-medium">Closed</option>
-              </select>
-            </div>
+          {/* 2. Edit Proposal */}
+          <button
+            onClick={() => setEditProposalOpen(true)}
+            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors"
+          >
+            <Edit className="w-3.5 h-3.5" />
+            <span>Edit</span>
+          </button>
 
-            {/* Quick Action Buttons */}
-            <div className="flex flex-wrap items-center gap-2 pt-2 sm:pt-0">
-              <button
-                onClick={() => setEditProposalOpen(true)}
-                className="flex items-center gap-1.5 py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs transition-colors"
-              >
-                <Edit className="w-3.5 h-3.5" />
-                <span>Edit</span>
-              </button>
-              <button
-                onClick={() => setCommModalOpen(true)}
-                className="flex items-center gap-1.5 py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs shadow-sm transition-all"
-              >
-                <PhoneCall className="w-3.5 h-3.5" />
-                <span>Add Conversation</span>
-              </button>
-              <button
-                onClick={() => {
-                  setEditingNote(undefined);
-                  setNoteModalOpen(true);
-                }}
-                className="flex items-center gap-1.5 py-2 px-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-medium text-xs transition-colors"
-              >
-                <FileText className="w-3.5 h-3.5" />
-                <span>Add Note</span>
-              </button>
-              <button
-                onClick={() => setFollowupModalOpen(true)}
-                className="flex items-center gap-1.5 py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-medium text-xs transition-colors"
-              >
-                <Clock className="w-3.5 h-3.5" />
-                <span>Follow-up</span>
-              </button>
-            </div>
-          </div>
+          {/* 3. Add Conversation */}
+          <button
+            onClick={() => setCommModalOpen(true)}
+            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs shadow-sm transition-all"
+          >
+            <PhoneCall className="w-3.5 h-3.5" />
+            <span>Add Conversation</span>
+          </button>
+
+          {/* 4. Add Note */}
+          <button
+            onClick={() => {
+              setEditingNote(undefined);
+              setNoteModalOpen(true);
+            }}
+            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-semibold text-xs transition-colors"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            <span>Add Note</span>
+          </button>
+
+          {/* 5. Follow-up */}
+          <button
+            onClick={() => setFollowupModalOpen(true)}
+            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-semibold text-xs transition-colors"
+          >
+            <Clock className="w-3.5 h-3.5" />
+            <span>Follow-up</span>
+          </button>
         </div>
 
         {/* Rejection Details Banner if Rejected */}
         {proposal.status === 'Rejected' && (
-          <div className="p-4 bg-rose-50 border border-rose-200 rounded-2xl text-xs space-y-1">
+          <div className="p-3.5 bg-rose-50 border border-rose-200 rounded-2xl text-xs space-y-1">
             <p className="font-bold text-rose-800 flex items-center gap-1.5">
               <XCircle className="w-4 h-4 text-rose-600" />
               <span>Proposal Rejected — Reason: {proposal.rejectionReason || 'Not Specified'}</span>
@@ -351,33 +395,38 @@ export default function ProposalDetailPage() {
         )}
       </div>
 
-      {/* Tabs Navigation Bar */}
-      <div className="flex border-b border-slate-200 overflow-x-auto bg-white rounded-2xl p-1 shadow-sm text-xs font-semibold scrollbar-none">
-        {[
-          { id: 'overview', label: 'Overview', icon: User },
-          { id: 'contacts', label: `Contacts (${contacts.length})`, icon: Phone },
-          { id: 'communication', label: `Communication (${communications.length})`, icon: PhoneCall },
-          { id: 'horoscope', label: 'Horoscope', icon: FileCheck },
-          { id: 'notes', label: `Notes (${notes.length})`, icon: FileText },
-          { id: 'activity', label: 'Activity Log', icon: ActivityIcon },
-        ].map((tab) => {
-          const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 py-2.5 px-4 rounded-xl whitespace-nowrap transition-all ${
-                isActive
-                  ? 'bg-rose-600 text-white shadow-sm font-bold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
-            >
-              <Icon className="w-4 h-4" />
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
+      {/* Horizontal Slider Section Tabs Navigation */}
+      <div className="relative bg-white rounded-2xl p-1 shadow-sm border border-slate-200/80">
+        <div className="flex items-center overflow-x-auto text-xs font-semibold scrollbar-none no-scrollbar pr-8">
+          {[
+            { id: 'overview', label: 'Overview', icon: User },
+            { id: 'contacts', label: `Contacts (${contacts.length})`, icon: Phone },
+            { id: 'communication', label: `Communication (${communications.length})`, icon: PhoneCall },
+            { id: 'horoscope', label: 'Horoscope', icon: FileCheck },
+            { id: 'notes', label: `Notes (${notes.length})`, icon: FileText },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center gap-1.5 py-2 px-3.5 rounded-xl whitespace-nowrap transition-all flex-shrink-0 ${
+                  isActive
+                    ? 'bg-rose-600 text-white shadow-sm font-bold'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+        {/* Subtle scroll hint indicator */}
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white via-white/90 to-transparent rounded-r-2xl pointer-events-none flex items-center justify-end pr-1 text-slate-400 font-bold text-xs">
+          ›
+        </div>
       </div>
 
       {/* TAB CONTENT PANELS */}
@@ -725,7 +774,7 @@ export default function ProposalDetailPage() {
               className="flex items-center gap-1.5 py-2 px-3.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs shadow-sm"
             >
               <PhoneCall className="w-4 h-4" />
-              <span>Log Conversation (&lt;30s)</span>
+              <span>+ Add Conversation</span>
             </button>
           </div>
 
