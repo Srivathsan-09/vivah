@@ -52,13 +52,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.35), rgba(248, 250, 252, 0.45)), url('${bgImage}')`,
               }}
             />
-            {/* Mobile Background (Optimized Portrait Kanyadaan Ritual) */}
+            {/* Mobile Background (Always Portrait Kanyadaan Ritual Image 4) */}
             <div
               className="block sm:hidden fixed inset-0 pointer-events-none z-0 bg-cover bg-center bg-fixed bg-no-repeat transition-all duration-500"
               style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.35), rgba(248, 250, 252, 0.45)), url('${
-                  bgImage === '/bg-matrimony-1.jpg' || bgImage === '/bg-matrimony-2.jpg' ? bgImage : '/bg-matrimony-mobile.jpg'
-                }')`,
+                backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.30), rgba(248, 250, 252, 0.40)), url('/bg-matrimony-mobile.jpg')`,
               }}
             />
           </>
