@@ -181,7 +181,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
         </div>
 
         {/* Multi-section Tab Bar */}
-        <div className="flex border-b border-slate-200 overflow-x-auto bg-slate-100/50 px-4 text-xs font-medium scrollbar-none">
+        <div className="flex border-b border-slate-200 overflow-x-auto bg-slate-100/50 px-4 text-xs font-medium scrollbar-none no-scrollbar">
           {[
             { id: 'personal', label: 'Personal', icon: User },
             { id: 'career', label: 'Education & Career', icon: GraduationCap },
@@ -197,7 +197,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                 key={tab.id}
                 type="button"
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-1.5 py-3 px-3.5 border-b-2 whitespace-nowrap transition-colors ${
+                className={`flex items-center gap-1.5 py-3 px-3 border-b-2 whitespace-nowrap transition-colors flex-shrink-0 ${
                   isActive
                     ? 'border-rose-600 text-rose-600 font-semibold bg-white'
                     : 'border-transparent text-slate-500 hover:text-slate-900'
@@ -699,8 +699,16 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
         </form>
 
         {/* Modal Footer */}
-        <div className="p-4 border-t border-slate-100 flex items-center justify-between bg-slate-50/50">
-          <div className="flex items-center gap-2">
+        <div className="p-3.5 sm:p-4 border-t border-slate-100 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-2.5 bg-slate-50/50">
+          <div className="flex items-center justify-between sm:justify-start gap-2">
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 transition-colors"
+            >
+              Cancel
+            </button>
+
             {activeTab !== 'personal' && (
               <button
                 type="button"
@@ -709,22 +717,14 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                   const currentIndex = tabs.indexOf(activeTab);
                   if (currentIndex > 0) setActiveTab(tabs[currentIndex - 1]);
                 }}
-                className="px-4 py-2 text-xs font-medium text-slate-600 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
+                className="px-3 py-1.5 text-xs font-medium text-slate-600 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
               >
-                Previous Step
+                ← Previous
               </button>
             )}
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-xs font-medium text-slate-600 hover:text-slate-800 transition-colors"
-            >
-              Cancel
-            </button>
-
             {activeTab !== 'status' && (
               <button
                 type="button"
@@ -733,7 +733,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                   const currentIndex = tabs.indexOf(activeTab);
                   if (currentIndex < tabs.length - 1) setActiveTab(tabs[currentIndex + 1]);
                 }}
-                className="px-4 py-2 text-xs font-medium text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
+                className="flex-1 sm:flex-initial px-3.5 py-2 text-xs font-medium text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors text-center whitespace-nowrap"
               >
                 Next Step →
               </button>
@@ -742,7 +742,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
             <button
               type="button"
               onClick={(e) => handleFormSubmit(e)}
-              className="px-5 py-2 text-xs font-semibold text-white bg-rose-600 rounded-xl hover:bg-rose-500 shadow-md shadow-rose-900/20 transition-all"
+              className="flex-1 sm:flex-initial px-4 py-2 text-xs font-semibold text-white bg-rose-600 rounded-xl hover:bg-rose-500 shadow-md shadow-rose-900/20 transition-all text-center whitespace-nowrap"
             >
               {initialProposal ? 'Save Changes' : 'Create Proposal'}
             </button>

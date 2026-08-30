@@ -159,7 +159,7 @@ function ProposalsContent() {
       </div>
 
       {/* Category Tab Bar (All vs Received vs Requested) */}
-      <div className="flex border-b border-slate-200 overflow-x-auto bg-white rounded-2xl p-1 shadow-sm text-xs font-semibold scrollbar-none">
+      <div className="flex border-b border-slate-200 overflow-x-auto bg-white rounded-2xl p-1 shadow-sm text-xs font-semibold scrollbar-none no-scrollbar">
         {[
           { id: 'All', label: 'All Proposals' },
           { id: 'Received', label: 'Received Proposals' },
@@ -170,7 +170,7 @@ function ProposalsContent() {
             <button
               key={tab.id}
               onClick={() => setTypeFilter(tab.id)}
-              className={`flex items-center gap-2 py-2.5 px-4 rounded-xl whitespace-nowrap transition-all ${
+              className={`flex items-center gap-2 py-2.5 px-4 rounded-xl whitespace-nowrap transition-all flex-shrink-0 ${
                 isActive
                   ? 'bg-rose-600 text-white shadow-sm font-bold'
                   : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'

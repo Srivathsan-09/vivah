@@ -62,8 +62,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
               onFocus={() => searchQuery.trim() && setIsSearching(true)}
-              placeholder="Search by name, phone, location, profile ID..."
-              className="w-full pl-9 pr-9 py-2 text-sm bg-slate-100/80 border border-transparent rounded-xl focus:bg-white focus:border-rose-300 focus:ring-2 focus:ring-rose-500/10 outline-none transition-all"
+              placeholder="Search proposals..."
+              className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-slate-100/80 border border-transparent rounded-xl focus:bg-white focus:border-rose-300 focus:ring-2 focus:ring-rose-500/10 outline-none transition-all"
             />
             {searchQuery && (
               <button
