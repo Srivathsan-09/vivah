@@ -117,46 +117,10 @@ function ProposalsContent() {
   return (
     <div className="space-y-6 pb-12">
       {/* Page Title & Header Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="bg-white/80 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/60 shadow-sm">
-          <h1 className="font-serif font-bold text-2xl text-slate-900">Proposal Management</h1>
-          <p className="text-xs font-medium text-slate-700 mt-0.5">Filter, search, and track all matrimony proposals</p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          {/* Grid / Table Toggle */}
-          <div className="flex items-center p-1 bg-slate-200/60 rounded-xl">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-lg transition-colors ${
-                viewMode === 'grid' ? 'bg-white text-slate-900 shadow-sm font-bold' : 'text-slate-500 hover:text-slate-900'
-              }`}
-              title="Card View"
-            >
-              <LayoutGrid className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => setViewMode('table')}
-              className={`p-2 rounded-lg transition-colors ${
-                viewMode === 'table' ? 'bg-white text-slate-900 shadow-sm font-bold' : 'text-slate-500 hover:text-slate-900'
-              }`}
-              title="List Table View"
-            >
-              <List className="w-4 h-4" />
-            </button>
-          </div>
-
-          <button
-            onClick={() => {
-              setEditingProposal(undefined);
-              setProposalModalOpen(true);
-            }}
-            className="flex items-center gap-2 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs shadow-md shadow-rose-900/20 transition-all"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add Proposal</span>
-          </button>
-        </div>
+      {/* Header Title Banner */}
+      <div className="bg-white/80 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/60 shadow-sm inline-block">
+        <h1 className="font-serif font-bold text-2xl text-slate-900">Proposal Management</h1>
+        <p className="text-xs font-medium text-slate-700 mt-0.5">Filter, search, and track all matrimony proposals</p>
       </div>
 
       {/* Category Tab Bar (All vs Received vs Requested) */}
