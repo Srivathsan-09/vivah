@@ -1,11 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Menu, Search, Plus, Bell, X, Phone, User, ArrowRight, Image as ImageIcon } from 'lucide-react';
+import React from 'react';
+import { Menu, Plus, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { getProposals, getFollowUps } from '../../services/storage';
-import { Proposal } from '../../types';
 
 interface HeaderProps {
   onOpenMobileMenu: () => void;
@@ -13,41 +10,20 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddProposal }) => {
-  const router = useRouter();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<Proposal[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
-
-  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-
-  // Check follow-ups count
-  const followups = getFollowUps();
-  const todayStr = new Date().toISOString().split('T')[0];
-  const dueFollowupsCount = followups.filter((f) => f.status === 'Pending' && f.dueDate <= todayStr).length;
-
-  const handleSearch = (query: string) => {
-    setSearchQuery(query);
-    if (!query.trim()) {
-      setSearchResults([]);
-      setIsSearching(false);
-      return;
-    }
-
-    setIsSearching(true);
-    const matches = getProposals({ search: query }).slice(0, 5);
-    setSearchResults(matches);
-  };
-
-  const handleSelectProposal = (id: string) => {
-    setSearchQuery('');
-    setIsSearching(false);
-    setIsMobileSearchOpen(false);
-    router.push(`/proposals/${id}`);
-  };
-
   return (
     <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 px-3 sm:px-6 md:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 shadow-sm relative">
-      {/* Centered Vivah Brand Calligraphic Logo (Mobile & Desktop) */}
+      {/* Left: Mobile Sidebar Toggle Menu Button */}
+      <div className="flex items-center gap-1.5 sm:gap-3 z-0">
+        <button
+          onClick={onOpenMobileMenu}
+          className="md:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
+          aria-label="Open menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* Center: Vivah Brand Calligraphic Logo (Mobile & Desktop) */}
       <Link
         href="/"
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center hover:opacity-90 transition-opacity"
@@ -59,152 +35,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
         />
       </Link>
 
-      {/* Mobile Full-Width Search Bar Overlay */}
-      {isMobileSearchOpen ? (
-        <div className="flex sm:hidden items-center gap-2 w-full z-20 bg-white py-1">
-          <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              autoFocus
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              placeholder="Search proposals, names..."
-              className="w-full pl-9 pr-8 py-2 text-xs bg-slate-100 border border-slate-200 rounded-xl focus:bg-white focus:border-rose-500 outline-none"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => {
-                  setSearchQuery('');
-                  setSearchResults([]);
-                  setIsSearching(false);
-                }}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            )}
-          </div>
-          <button
-            onClick={() => {
-              setIsMobileSearchOpen(false);
-              setSearchQuery('');
-              setIsSearching(false);
-            }}
-            className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 text-xs font-semibold"
-          >
-            Cancel
-          </button>
-
-          {/* Autocomplete Search Dropdown for Mobile Overlay */}
-          {isSearching && (
-            <div className="absolute top-full left-4 right-4 mt-2 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden z-50">
-              <div className="p-2 border-b border-slate-100 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                Search Results ({searchResults.length})
-              </div>
-              {searchResults.length === 0 ? (
-                <div className="p-4 text-xs text-slate-500 text-center">No proposals found</div>
-              ) : (
-                <div className="divide-y divide-slate-100 max-h-60 overflow-y-auto">
-                  {searchResults.map((prop) => (
-                    <button
-                      key={prop.id}
-                      onClick={() => handleSelectProposal(prop.id)}
-                      className="w-full p-3 text-left hover:bg-rose-50/50 flex items-center justify-between transition-colors"
-                    >
-                      <div>
-                        <p className="text-xs font-bold text-slate-900">{prop.fullName}</p>
-                        <p className="text-[11px] text-slate-500">
-                          {prop.age} yrs • {prop.location} • {prop.matrimonyPlatform}
-                        </p>
-                      </div>
-                      <ArrowRight className="w-4 h-4 text-slate-400" />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="flex items-center gap-1.5 sm:gap-3 z-0">
-          <button
-            onClick={onOpenMobileMenu}
-            className="md:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
-            aria-label="Open menu"
-          >
-            <Menu className="w-5 h-5" />
-          </button>
-
-          {/* Mobile Search Icon Button */}
-          <button
-            onClick={() => setIsMobileSearchOpen(true)}
-            className="sm:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors flex items-center gap-1.5"
-            aria-label="Search"
-          >
-            <Search className="w-5 h-5" />
-          </button>
-
-          {/* Desktop Search Bar (Constrained width to avoid overflowing into centered logo) */}
-          <div className="hidden sm:block relative w-44 md:w-56 lg:w-64">
-            <div className="relative">
-              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => handleSearch(e.target.value)}
-                onFocus={() => searchQuery.trim() && setIsSearching(true)}
-                placeholder="Search..."
-                className="w-full pl-9 pr-8 py-1.5 text-xs sm:text-sm bg-slate-100/80 border border-transparent rounded-xl focus:bg-white focus:border-rose-300 focus:ring-2 focus:ring-rose-500/10 outline-none transition-all"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => {
-                    setSearchQuery('');
-                    setSearchResults([]);
-                    setIsSearching(false);
-                  }}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              )}
-            </div>
-
-            {/* Desktop Search Dropdown */}
-            {isSearching && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden z-50">
-                <div className="p-2 border-b border-slate-100 text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                  Search Results ({searchResults.length})
-                </div>
-                {searchResults.length === 0 ? (
-                  <div className="p-4 text-xs text-slate-500 text-center">No proposals found</div>
-                ) : (
-                  <div className="divide-y divide-slate-100 max-h-60 overflow-y-auto">
-                    {searchResults.map((prop) => (
-                      <button
-                        key={prop.id}
-                        onClick={() => handleSelectProposal(prop.id)}
-                        className="w-full p-3 text-left hover:bg-rose-50/50 flex items-center justify-between transition-colors"
-                      >
-                        <div>
-                          <p className="text-xs font-bold text-slate-900">{prop.fullName}</p>
-                          <p className="text-[11px] text-slate-500">
-                            {prop.age} yrs • {prop.location} • {prop.matrimonyPlatform}
-                          </p>
-                        </div>
-                        <ArrowRight className="w-4 h-4 text-slate-400" />
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Header Quick Actions Right */}
+      {/* Right: Quick Actions (Background Switcher + Add Proposal) */}
       <div className="flex items-center gap-1.5 sm:gap-2 z-0">
         {/* Quick Background Switcher Toggle */}
         <button
