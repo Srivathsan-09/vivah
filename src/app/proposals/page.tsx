@@ -58,6 +58,10 @@ function ProposalsContent() {
   // Modals
   const [editingProposal, setEditingProposal] = useState<Proposal | undefined>(undefined);
   const [proposalModalOpen, setProposalModalOpen] = useState(false);
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState<{
+    isOpen: boolean;
+    proposal?: Proposal;
+  }>({ isOpen: false });
   const [commModal, setCommModal] = useState<{ isOpen: boolean; proposalId: string; proposalName: string }>({
     isOpen: false,
     proposalId: '',
@@ -73,7 +77,7 @@ function ProposalsContent() {
   });
 
   const loadProposals = () => {
-    const params: ProposalFilterParams = {
+    const list = getProposals({
       search,
       proposalType: typeFilter as any,
       status: statusFilter as any,
@@ -82,9 +86,8 @@ function ProposalsContent() {
       shortlistedOnly: shortlistedFilter,
       sortBy,
       sortOrder,
-    };
-    const results = getProposals(params);
-    setProposals(results);
+    });
+    setProposals(list);
   };
 
   useEffect(() => {
@@ -107,11 +110,7 @@ function ProposalsContent() {
   const handleDeleteProposal = (proposal: Proposal, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (confirm(`Are you sure you want to delete proposal for ${proposal.fullName}? All associated data will be removed.`)) {
-      deleteProposal(proposal.id);
-      showToast('Proposal Deleted', `Deleted proposal for ${proposal.fullName}.`);
-      loadProposals();
-    }
+    setDeleteConfirmModal({ isOpen: true, proposal });
   };
 
   return (
@@ -565,6 +564,44 @@ function ProposalsContent() {
           onClose={() => setFollowupModal({ isOpen: false, proposalId: '' })}
           onSaved={loadProposals}
         />
+      )}
+
+      {/* Custom Delete Proposal Confirmation Modal */}
+      {deleteConfirmModal.isOpen && deleteConfirmModal.proposal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4 text-center">
+            <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto border border-rose-200">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-serif font-bold text-slate-900 text-base">Delete Proposal Profile?</h3>
+              <p className="text-xs text-slate-500 mt-1">
+                Are you sure you want to delete proposal for <span className="font-bold text-slate-800">{deleteConfirmModal.proposal.fullName}</span>? All associated data will be removed.
+              </p>
+            </div>
+            <div className="flex gap-2.5 pt-2">
+              <button
+                onClick={() => setDeleteConfirmModal({ isOpen: false })}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (deleteConfirmModal.proposal) {
+                    deleteProposal(deleteConfirmModal.proposal.id);
+                    showToast('Proposal Deleted', `Deleted proposal for ${deleteConfirmModal.proposal.fullName}.`);
+                    loadProposals();
+                  }
+                  setDeleteConfirmModal({ isOpen: false });
+                }}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs shadow-md shadow-rose-600/20 transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
