@@ -7,7 +7,10 @@ import { getProposals, getHoroscope, getCommunications, getNotes } from '../../s
 import { Proposal } from '../../types';
 import { formatDate, getStatusBadgeClass, getHoroscopeStatusBadgeClass } from '../../lib/utils';
 
+import { useToast } from '../../components/ui/Toast';
+
 export default function ShortlistPage() {
+  const { showToast } = useToast();
   const [shortlisted, setShortlisted] = useState<Proposal[]>([]);
   const [selectedForComparison, setSelectedForComparison] = useState<string[]>([]);
 
@@ -24,7 +27,7 @@ export default function ShortlistPage() {
       setSelectedForComparison(selectedForComparison.filter((item) => item !== id));
     } else {
       if (selectedForComparison.length >= 4) {
-        alert('You can compare up to 4 proposals at a time.');
+        showToast('Limit Reached', 'You can compare up to 4 proposals at a time.', 'error');
         return;
       }
       setSelectedForComparison([...selectedForComparison, id]);

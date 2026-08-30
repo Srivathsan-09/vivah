@@ -5,6 +5,7 @@ import { X, Phone, MessageSquare, Video, Mail, Users, Send } from 'lucide-react'
 import { ProposalContact, CommunicationMethod, CommunicationDirection } from '../../types';
 import { getContacts, addCommunication } from '../../services/storage';
 import { useToast } from '../ui/Toast';
+import { CustomSelect } from '../ui/CustomSelect';
 
 interface CommunicationModalProps {
   isOpen: boolean;
@@ -132,15 +133,15 @@ export const CommunicationModal: React.FC<CommunicationModalProps> = ({
           {/* Direction & Contact Person */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Direction</label>
-              <select
+              <CustomSelect
+                label="Direction"
                 value={direction}
-                onChange={(e) => setDirection(e.target.value as CommunicationDirection)}
-                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:border-rose-500 outline-none"
-              >
-                <option value="Outgoing">Outgoing (We Called / Sent)</option>
-                <option value="Incoming">Incoming (They Called / Sent)</option>
-              </select>
+                onChange={(val) => setDirection(val as CommunicationDirection)}
+                options={[
+                  { value: 'Outgoing', label: 'Outgoing (We Called / Sent)' },
+                  { value: 'Incoming', label: 'Incoming (They Called / Sent)' },
+                ]}
+              />
             </div>
 
             <div>

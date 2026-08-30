@@ -32,6 +32,7 @@ import {
 import { Proposal, ProposalStatus, HoroscopeStatus, ProposalFilterParams } from '../../types';
 import { formatDate, getStatusBadgeClass, getHoroscopeStatusBadgeClass } from '../../lib/utils';
 import { useToast } from '../../components/ui/Toast';
+import { CustomSelect } from '../../components/ui/CustomSelect';
 import { CommunicationModal } from '../../components/modals/CommunicationModal';
 import { NoteModal } from '../../components/modals/NoteModal';
 import { FollowUpModal } from '../../components/modals/FollowUpModal';
@@ -157,62 +158,53 @@ function ProposalsContent() {
         {/* Line 1: All Statuses (Left) | Sort By (Right) */}
         <div className="grid grid-cols-2 gap-2.5 items-center">
           {/* Status Filter Dropdown */}
-          <div className="relative">
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full py-2 px-3 pr-8 text-xs bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-2xl outline-none font-semibold text-slate-800 appearance-none cursor-pointer transition-all shadow-xs focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-            >
-              <option value="All" className="bg-white text-slate-900">All Statuses</option>
-              <option value="New" className="bg-white text-slate-900">New</option>
-              <option value="Contacted" className="bg-white text-slate-900">Contacted</option>
-              <option value="Information Pending" className="bg-white text-slate-900">Info Pending</option>
-              <option value="Horoscope Pending" className="bg-white text-slate-900">Horoscope Pending</option>
-              <option value="Under Consideration" className="bg-white text-slate-900">Under Consideration</option>
-              <option value="Meeting Planned" className="bg-white text-slate-900">Meeting Planned</option>
-              <option value="Shortlisted" className="bg-white text-slate-900">Shortlisted</option>
-              <option value="On Hold" className="bg-white text-slate-900">On Hold</option>
-              <option value="Rejected" className="bg-white text-slate-900">Rejected</option>
-              <option value="Closed" className="bg-white text-slate-900">Closed</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-          </div>
+          <CustomSelect
+            value={statusFilter}
+            onChange={(val) => setStatusFilter(val)}
+            options={[
+              { value: 'All', label: 'All Statuses' },
+              { value: 'New', label: 'New' },
+              { value: 'Contacted', label: 'Contacted' },
+              { value: 'Information Pending', label: 'Info Pending' },
+              { value: 'Horoscope Pending', label: 'Horoscope Pending' },
+              { value: 'Under Consideration', label: 'Under Consideration' },
+              { value: 'Meeting Planned', label: 'Meeting Planned' },
+              { value: 'Shortlisted', label: 'Shortlisted' },
+              { value: 'On Hold', label: 'On Hold' },
+              { value: 'Rejected', label: 'Rejected' },
+              { value: 'Closed', label: 'Closed' },
+            ]}
+          />
 
           {/* Sort By Dropdown */}
-          <div className="relative">
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="w-full py-2 px-3 pr-8 text-xs bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-2xl outline-none font-semibold text-slate-800 appearance-none cursor-pointer transition-all shadow-xs focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-            >
-              <option value="recently_updated" className="bg-white text-slate-900">Sort: Recently Updated</option>
-              <option value="recently_added" className="bg-white text-slate-900">Sort: Recently Added</option>
-              <option value="name" className="bg-white text-slate-900">Sort: Name</option>
-              <option value="age" className="bg-white text-slate-900">Sort: Age</option>
-              <option value="status" className="bg-white text-slate-900">Sort: Status</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-          </div>
+          <CustomSelect
+            value={sortBy || 'recently_updated'}
+            onChange={(val) => setSortBy(val as any)}
+            options={[
+              { value: 'recently_updated', label: 'Sort: Recently Updated' },
+              { value: 'recently_added', label: 'Sort: Recently Added' },
+              { value: 'name', label: 'Sort: Name' },
+              { value: 'age', label: 'Sort: Age' },
+              { value: 'status', label: 'Sort: Status' },
+            ]}
+          />
         </div>
 
         {/* Line 2: All Horoscope (Left) | Shortlisted (Right) */}
         <div className="grid grid-cols-2 gap-2.5 items-center">
           {/* Horoscope Status Filter Dropdown */}
-          <div className="relative">
-            <select
-              value={horoscopeFilter}
-              onChange={(e) => setHoroscopeFilter(e.target.value)}
-              className="w-full py-2 px-3 pr-8 text-xs bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-2xl outline-none font-semibold text-slate-800 appearance-none cursor-pointer transition-all shadow-xs focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
-            >
-              <option value="All" className="bg-white text-slate-900">All Horoscope</option>
-              <option value="Matched" className="bg-white text-slate-900">Matched</option>
-              <option value="Partially Matched" className="bg-white text-slate-900">Partially Matched</option>
-              <option value="Checking" className="bg-white text-slate-900">Checking</option>
-              <option value="Pending" className="bg-white text-slate-900">Pending</option>
-              <option value="Not Matched" className="bg-white text-slate-900">Not Matched</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
-          </div>
+          <CustomSelect
+            value={horoscopeFilter}
+            onChange={(val) => setHoroscopeFilter(val)}
+            options={[
+              { value: 'All', label: 'All Horoscope' },
+              { value: 'Matched', label: 'Matched' },
+              { value: 'Partially Matched', label: 'Partially Matched' },
+              { value: 'Checking', label: 'Checking' },
+              { value: 'Pending', label: 'Pending' },
+              { value: 'Not Matched', label: 'Not Matched' },
+            ]}
+          />
 
           {/* Shortlisted Toggle Button + Reset Link */}
           <div className="flex items-center gap-2">

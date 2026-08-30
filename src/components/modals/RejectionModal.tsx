@@ -5,6 +5,7 @@ import { X, XCircle } from 'lucide-react';
 import { RejectionReason } from '../../types';
 import { updateProposal, getProposal } from '../../services/storage';
 import { useToast } from '../ui/Toast';
+import { CustomSelect } from '../ui/CustomSelect';
 
 interface RejectionModalProps {
   isOpen: boolean;
@@ -73,18 +74,12 @@ export const RejectionModal: React.FC<RejectionModalProps> = ({
 
         <form onSubmit={handleSubmit} className="py-4 space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Rejection Reason</label>
-            <select
+            <CustomSelect
+              label="Rejection Reason"
               value={rejectionReason}
-              onChange={(e) => setRejectionReason(e.target.value as RejectionReason)}
-              className="w-full px-3.5 py-2 text-xs border border-slate-200 rounded-xl focus:border-rose-500 outline-none"
-            >
-              {reasonOptions.map((r) => (
-                <option key={r} value={r}>
-                  {r}
-                </option>
-              ))}
-            </select>
+              onChange={(val) => setRejectionReason(val as RejectionReason)}
+              options={reasonOptions}
+            />
           </div>
 
           <div>

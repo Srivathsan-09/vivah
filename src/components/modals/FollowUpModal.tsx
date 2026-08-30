@@ -5,6 +5,7 @@ import { X, Clock, AlertCircle } from 'lucide-react';
 import { Priority, FollowUp } from '../../types';
 import { addFollowUp, updateFollowUp, getProposal, getContacts } from '../../services/storage';
 import { useToast } from '../ui/Toast';
+import { CustomSelect } from '../ui/CustomSelect';
 
 interface FollowUpModalProps {
   isOpen: boolean;
@@ -148,16 +149,12 @@ export const FollowUpModal: React.FC<FollowUpModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1">Priority</label>
-              <select
+              <CustomSelect
+                label="Priority"
                 value={priority}
-                onChange={(e) => setPriority(e.target.value as Priority)}
-                className="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:border-rose-500 outline-none"
-              >
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
-              </select>
+                onChange={(val) => setPriority(val as Priority)}
+                options={['Low', 'Medium', 'High']}
+              />
             </div>
           </div>
 

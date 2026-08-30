@@ -5,6 +5,7 @@ import { X, FileText } from 'lucide-react';
 import { NoteCategory, Note } from '../../types';
 import { addNote, updateNote, getProposal } from '../../services/storage';
 import { useToast } from '../ui/Toast';
+import { CustomSelect } from '../ui/CustomSelect';
 
 interface NoteModalProps {
   isOpen: boolean;
@@ -85,19 +86,19 @@ export const NoteModal: React.FC<NoteModalProps> = ({
 
         <form onSubmit={handleSubmit} className="py-4 space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-700 mb-1">Category</label>
-            <select
+            <CustomSelect
+              label="Category"
               value={category}
-              onChange={(e) => setCategory(e.target.value as NoteCategory)}
-              className="w-full px-3.5 py-2 text-xs border border-slate-200 rounded-xl focus:border-rose-500 outline-none"
-            >
-              <option value="General">General</option>
-              <option value="Family">Family Background</option>
-              <option value="Career">Career & Finances</option>
-              <option value="Horoscope">Horoscope & Astrology</option>
-              <option value="Conversation">Conversation Summary</option>
-              <option value="Decision">Decision Rationale</option>
-            </select>
+              onChange={(val) => setCategory(val as NoteCategory)}
+              options={[
+                { value: 'General', label: 'General' },
+                { value: 'Family', label: 'Family Background' },
+                { value: 'Career', label: 'Career & Finances' },
+                { value: 'Horoscope', label: 'Horoscope & Astrology' },
+                { value: 'Conversation', label: 'Conversation Summary' },
+                { value: 'Decision', label: 'Decision Rationale' },
+              ]}
+            />
           </div>
 
           <div>

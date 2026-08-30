@@ -42,12 +42,13 @@ export default function FollowUpsPage() {
     loadData();
   };
 
+  const [deleteConfirmModal, setDeleteConfirmModal] = useState<{
+    isOpen: boolean;
+    followupId?: string;
+  }>({ isOpen: false });
+
   const handleDelete = (id: string) => {
-    if (confirm('Delete this follow-up reminder?')) {
-      deleteFollowUp(id);
-      showToast('Deleted', 'Follow-up removed.');
-      loadData();
-    }
+    setDeleteConfirmModal({ isOpen: true, followupId: id });
   };
 
   const currentList =
@@ -211,6 +212,44 @@ export default function FollowUpsPage() {
           onClose={() => setModalState({ isOpen: false, proposalId: '' })}
           onSaved={loadData}
         />
+      )}
+
+      {/* Custom Delete Modal */}
+      {deleteConfirmModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4 text-center">
+            <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto border border-rose-200">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-serif font-bold text-slate-900 text-base">Delete Follow-up Reminder?</h3>
+              <p className="text-xs text-slate-500 mt-1">
+                Are you sure you want to delete this scheduled follow-up reminder?
+              </p>
+            </div>
+            <div className="flex gap-2.5 pt-2">
+              <button
+                onClick={() => setDeleteConfirmModal({ isOpen: false })}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (deleteConfirmModal.followupId) {
+                    deleteFollowUp(deleteConfirmModal.followupId);
+                    showToast('Deleted', 'Follow-up removed.');
+                    loadData();
+                  }
+                  setDeleteConfirmModal({ isOpen: false });
+                }}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs shadow-md shadow-rose-600/20 transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

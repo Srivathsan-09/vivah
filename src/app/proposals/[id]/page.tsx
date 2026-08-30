@@ -62,6 +62,7 @@ import {
 } from '../../../types';
 import { formatDate, getStatusBadgeClass, getHoroscopeStatusBadgeClass } from '../../../lib/utils';
 import { useToast } from '../../../components/ui/Toast';
+import { CustomSelect } from '../../../components/ui/CustomSelect';
 import { ProposalModal } from '../../../components/modals/ProposalModal';
 import { CommunicationModal } from '../../../components/modals/CommunicationModal';
 import { NoteModal } from '../../../components/modals/NoteModal';
@@ -310,8 +311,8 @@ export default function ProposalDetailPage() {
           </div>
         </div>
 
-        {/* Action Control Bar (Full-Width Responsive 5-Column Grid - Zero Whitespace Gap) */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2 pt-3 border-t border-slate-100 w-full text-xs">
+        {/* Action Control Bar (Full-Width Responsive 4-Column Grid - Zero Whitespace Gap) */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-slate-100 w-full text-xs">
           {/* 1. Custom Status Popover Dropdown (Zero Native Browser Picker) */}
           <div className="relative col-span-2 sm:col-span-1" ref={statusDropdownRef}>
             <button
@@ -369,16 +370,7 @@ export default function ProposalDetailPage() {
             <span>Edit</span>
           </button>
 
-          {/* 3. Add Conversation */}
-          <button
-            onClick={() => setCommModalOpen(true)}
-            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs shadow-sm transition-all"
-          >
-            <PhoneCall className="w-3.5 h-3.5" />
-            <span>Add Conversation</span>
-          </button>
-
-          {/* 4. Add Note */}
+          {/* 3. Add Note */}
           <button
             onClick={() => {
               setEditingNote(undefined);
@@ -390,7 +382,7 @@ export default function ProposalDetailPage() {
             <span>Add Note</span>
           </button>
 
-          {/* 5. Follow-up */}
+          {/* 4. Follow-up */}
           <button
             onClick={() => setFollowupModalOpen(true)}
             className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-semibold text-xs transition-colors"
@@ -418,7 +410,6 @@ export default function ProposalDetailPage() {
           {[
             { id: 'overview', label: 'Overview', icon: User },
             { id: 'contacts', label: `Contacts (${contacts.length})`, icon: Phone },
-            { id: 'communication', label: `Communication (${communications.length})`, icon: PhoneCall },
             { id: 'horoscope', label: 'Horoscope', icon: FileCheck },
             { id: 'notes', label: `Notes (${notes.length})`, icon: FileText },
           ].map((tab) => {
@@ -643,21 +634,21 @@ export default function ProposalDetailPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-slate-600 mb-1 font-medium">Relationship</label>
-                  <select
-                    value={newContact.relationship}
-                    onChange={(e) => setNewContact({ ...newContact, relationship: e.target.value as any })}
-                    className="w-full px-3 py-2 border rounded-xl outline-none"
-                  >
-                    <option value="Father">Father</option>
-                    <option value="Mother">Mother</option>
-                    <option value="Son/Daughter">Candidate Directly</option>
-                    <option value="Brother">Brother</option>
-                    <option value="Sister">Sister</option>
-                    <option value="Relative">Relative</option>
-                    <option value="Mediator">Mediator</option>
-                    <option value="Other">Other</option>
-                  </select>
+                  <CustomSelect
+                    label="Relationship"
+                    value={newContact.relationship || 'Father'}
+                    onChange={(val) => setNewContact({ ...newContact, relationship: val as any })}
+                    options={[
+                      { value: 'Father', label: 'Father' },
+                      { value: 'Mother', label: 'Mother' },
+                      { value: 'Son/Daughter', label: 'Candidate Directly' },
+                      { value: 'Brother', label: 'Brother' },
+                      { value: 'Sister', label: 'Sister' },
+                      { value: 'Relative', label: 'Relative' },
+                      { value: 'Mediator', label: 'Mediator' },
+                      { value: 'Other', label: 'Other' },
+                    ]}
+                  />
                 </div>
                 <div>
                   <label className="block text-slate-600 mb-1 font-medium">Phone *</label>
@@ -910,20 +901,20 @@ export default function ProposalDetailPage() {
               <form onSubmit={handleSaveHoroscope} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
                   <div>
-                    <label className="block text-slate-700 font-semibold mb-1">Horoscope Status</label>
-                    <select
+                    <CustomSelect
+                      label="Horoscope Status"
                       value={horoscopeForm.status || 'Pending'}
-                      onChange={(e) => setHoroscopeForm({ ...horoscopeForm, status: e.target.value as HoroscopeStatus })}
-                      className="w-full px-3 py-2 border rounded-xl outline-none"
-                    >
-                      <option value="Not Provided">Not Provided</option>
-                      <option value="Pending">Pending</option>
-                      <option value="Checking">Checking</option>
-                      <option value="Matched">Matched</option>
-                      <option value="Partially Matched">Partially Matched</option>
-                      <option value="Not Matched">Not Matched</option>
-                      <option value="Not Applicable">Not Applicable</option>
-                    </select>
+                      onChange={(val) => setHoroscopeForm({ ...horoscopeForm, status: val as HoroscopeStatus })}
+                      options={[
+                        'Not Provided',
+                        'Pending',
+                        'Checking',
+                        'Matched',
+                        'Partially Matched',
+                        'Not Matched',
+                        'Not Applicable',
+                      ]}
+                    />
                   </div>
 
                   <div>
@@ -1179,11 +1170,16 @@ export default function ProposalDetailPage() {
                     </button>
                     <button
                       onClick={() => {
-                        if (confirm('Delete note?')) {
-                          deleteNote(n.id);
-                          showToast('Deleted', 'Note removed.');
-                          reloadData();
-                        }
+                        setGenericConfirmModal({
+                          isOpen: true,
+                          title: 'Delete Note?',
+                          description: 'Are you sure you want to delete this note?',
+                          onConfirm: () => {
+                            deleteNote(n.id);
+                            showToast('Deleted', 'Note removed.');
+                            reloadData();
+                          },
+                        });
                       }}
                       className="p-1 text-slate-400 hover:text-rose-600"
                     >

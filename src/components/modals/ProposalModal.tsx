@@ -6,6 +6,7 @@ import { Proposal, ProposalStatus, ContactRelationship } from '../../types';
 import { checkDuplicate, getSources } from '../../services/storage';
 import { DuplicateAlertModal } from './DuplicateAlertModal';
 import { useToast } from '../ui/Toast';
+import { CustomSelect } from '../ui/CustomSelect';
 
 interface ProposalModalProps {
   isOpen: boolean;
@@ -262,16 +263,12 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">Gender</label>
-                  <select
+                  <CustomSelect
+                    label="Gender"
                     value={formData.gender || 'Male'}
-                    onChange={(e) => handleInputChange('gender', e.target.value as any)}
-                    className="w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-slate-200 rounded-xl focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 outline-none"
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
+                    onChange={(val) => handleInputChange('gender', val as any)}
+                    options={['Male', 'Female', 'Other']}
+                  />
                 </div>
 
                 <div>
@@ -350,17 +347,12 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">Marital Status</label>
-                  <select
+                  <CustomSelect
+                    label="Marital Status"
                     value={formData.maritalStatus || 'Never Married'}
-                    onChange={(e) => handleInputChange('maritalStatus', e.target.value as any)}
-                    className="w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-slate-200 rounded-xl focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 outline-none"
-                  >
-                    <option value="Never Married">Never Married</option>
-                    <option value="Divorced">Divorced</option>
-                    <option value="Widowed">Widowed</option>
-                    <option value="Awaiting Divorce">Awaiting Divorce</option>
-                  </select>
+                    onChange={(val) => handleInputChange('maritalStatus', val as any)}
+                    options={['Never Married', 'Divorced', 'Widowed', 'Awaiting Divorce']}
+                  />
                 </div>
               </div>
 
@@ -487,18 +479,12 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
             <div className="space-y-3.5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">Matrimony Source / Platform</label>
-                  <select
+                  <CustomSelect
+                    label="Matrimony Source / Platform"
                     value={formData.matrimonyPlatform || 'BharatMatrimony'}
-                    onChange={(e) => handleInputChange('matrimonyPlatform', e.target.value)}
-                    className="w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-slate-200 rounded-xl focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 outline-none"
-                  >
-                    {sources.map((src) => (
-                      <option key={src.id} value={src.name}>
-                        {src.name}
-                      </option>
-                    ))}
-                  </select>
+                    onChange={(val) => handleInputChange('matrimonyPlatform', val)}
+                    options={sources.map((s) => ({ value: s.name, label: s.name }))}
+                  />
                 </div>
 
                 <div>
@@ -534,17 +520,12 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">Horoscope Match</label>
-                  <select
+                  <CustomSelect
+                    label="Horoscope Match"
                     value={formData.horoscopeMatch || 'Pending'}
-                    onChange={(e) => handleInputChange('horoscopeMatch', e.target.value as any)}
-                    className="w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-slate-200 rounded-xl focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 outline-none font-semibold text-slate-800"
-                  >
-                    <option value="Pending">Pending</option>
-                    <option value="Very Good">Very Good</option>
-                    <option value="OK">OK</option>
-                    <option value="Not ok">Not ok</option>
-                  </select>
+                    onChange={(val) => handleInputChange('horoscopeMatch', val as any)}
+                    options={['Pending', 'Very Good', 'OK', 'Not ok']}
+                  />
                 </div>
 
                 {/* Upload Horoscope Chart Image */}
@@ -686,21 +667,21 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">Relationship</label>
-                  <select
+                  <CustomSelect
+                    label="Relationship"
                     value={contactData.relationship || 'Father'}
-                    onChange={(e) => setContactData((prev) => ({ ...prev, relationship: e.target.value as any }))}
-                    className="w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-slate-200 rounded-xl focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 outline-none"
-                  >
-                    <option value="Father">Father</option>
-                    <option value="Mother">Mother</option>
-                    <option value="Brother">Brother</option>
-                    <option value="Sister">Sister</option>
-                    <option value="Uncle">Uncle</option>
-                    <option value="Self">Self</option>
-                    <option value="Broker">Broker / Mediator</option>
-                    <option value="Other">Other</option>
-                  </select>
+                    onChange={(val) => setContactData((prev) => ({ ...prev, relationship: val as any }))}
+                    options={[
+                      { value: 'Father', label: 'Father' },
+                      { value: 'Mother', label: 'Mother' },
+                      { value: 'Brother', label: 'Brother' },
+                      { value: 'Sister', label: 'Sister' },
+                      { value: 'Uncle', label: 'Uncle' },
+                      { value: 'Self', label: 'Self' },
+                      { value: 'Broker', label: 'Broker / Mediator' },
+                      { value: 'Other', label: 'Other' },
+                    ]}
+                  />
                 </div>
 
                 <div>
@@ -733,23 +714,23 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
             <div className="space-y-3.5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
-                  <label className="block text-[11px] sm:text-xs font-semibold text-slate-700 mb-1">Proposal Stage / Status</label>
-                  <select
+                  <CustomSelect
+                    label="Proposal Stage / Status"
                     value={formData.status || 'New'}
-                    onChange={(e) => handleInputChange('status', e.target.value as any)}
-                    className="w-full px-3 py-1.5 sm:py-2 text-xs sm:text-sm border border-slate-200 rounded-xl focus:border-rose-500 focus:ring-2 focus:ring-rose-500/10 outline-none"
-                  >
-                    <option value="New">New</option>
-                    <option value="Under Consideration">Under Consideration</option>
-                    <option value="Horoscope Sent">Horoscope Sent</option>
-                    <option value="Horoscope Matched">Horoscope Matched</option>
-                    <option value="Horoscope Mismatched">Horoscope Mismatched</option>
-                    <option value="Shortlisted">Shortlisted</option>
-                    <option value="Meeting Fixed">Meeting Fixed</option>
-                    <option value="Accepted">Accepted</option>
-                    <option value="On Hold">On Hold</option>
-                    <option value="Rejected">Rejected</option>
-                  </select>
+                    onChange={(val) => handleInputChange('status', val as any)}
+                    options={[
+                      'New',
+                      'Contacted',
+                      'Information Pending',
+                      'Horoscope Pending',
+                      'Under Consideration',
+                      'Meeting Planned',
+                      'Shortlisted',
+                      'On Hold',
+                      'Rejected',
+                      'Closed',
+                    ]}
+                  />
                 </div>
 
                 <div className="flex items-center pt-2 sm:pt-6">
