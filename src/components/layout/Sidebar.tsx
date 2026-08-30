@@ -77,17 +77,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen, onO
     },
   ];
 
-  const proposalSubLinks = [
-    { label: 'All Proposals', href: '/proposals' },
-    { label: 'Received Proposals', href: '/proposals?type=Received' },
-    { label: 'Requested Proposals', href: '/proposals?type=Requested' },
-    { label: 'New', href: '/proposals?status=New' },
-    { label: 'Under Consideration', href: '/proposals?status=Under%20Consideration' },
-    { label: 'Shortlisted', href: '/proposals?status=Shortlisted' },
-    { label: 'On Hold', href: '/proposals?status=On%20Hold' },
-    { label: 'Rejected', href: '/proposals?status=Rejected' },
-  ];
-
   const sidebarContent = (
     <div className="flex flex-col h-full bg-slate-900 text-slate-100 border-r border-slate-800">
       {/* Brand Header */}
@@ -143,22 +132,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen, onO
                   </span>
                 )}
               </Link>
-
-              {/* Sub links for Proposals if active */}
-              {item.href === '/proposals' && isActive && (
-                <div className="ml-8 mt-1 space-y-1 border-l border-slate-800 pl-3">
-                  {proposalSubLinks.map((sub) => (
-                    <Link
-                      key={sub.href}
-                      href={sub.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="block text-xs py-1.5 text-slate-400 hover:text-rose-300 transition-colors"
-                    >
-                      {sub.label}
-                    </Link>
-                  ))}
-                </div>
-              )}
             </div>
           );
         })}
