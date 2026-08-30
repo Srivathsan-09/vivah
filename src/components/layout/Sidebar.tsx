@@ -75,7 +75,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen, onO
       badge: counts.shortlisted > 0 ? counts.shortlisted : undefined,
       badgeColor: 'bg-amber-500 text-white',
     },
-    { label: 'Settings', href: '/settings', icon: Settings },
   ];
 
   const proposalSubLinks = [

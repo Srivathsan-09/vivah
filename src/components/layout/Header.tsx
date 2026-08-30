@@ -46,7 +46,18 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 px-4 md:px-8 py-3 flex items-center justify-between gap-4 shadow-sm">
+    <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 px-4 md:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-4 shadow-sm relative">
+      {/* Centered Vivah Brand Calligraphic Logo (Mobile & Desktop) */}
+      <Link
+        href="/"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex items-center justify-center hover:opacity-90 transition-opacity"
+      >
+        <img
+          src="/vivah-logo.png"
+          alt="Vivah"
+          className="h-7 sm:h-9 md:h-10 w-auto object-contain drop-shadow-sm"
+        />
+      </Link>
       {/* Mobile Full-Width Search Bar Overlay */}
       {isMobileSearchOpen ? (
         <div className="flex sm:hidden items-center gap-2 w-full">
