@@ -341,6 +341,8 @@ export const createProposal = (
   return newProposal;
 };
 
+export const addProposal = createProposal;
+
 export const updateProposal = (id: string, updates: Partial<Proposal>): Proposal | undefined => {
   const proposals = getItem<Proposal[]>(KEYS.PROPOSALS, []);
   const index = proposals.findIndex((p) => p.id === id);

@@ -83,6 +83,7 @@ export default function ProposalDetailPage() {
   const [activeTab, setActiveTab] = useState<'overview' | 'contacts' | 'communication' | 'horoscope' | 'notes' | 'activity'>('overview');
 
   // Modals state
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [editProposalOpen, setEditProposalOpen] = useState(false);
   const [commModalOpen, setCommModalOpen] = useState(false);
   const [noteModalOpen, setNoteModalOpen] = useState(false);
@@ -218,29 +219,21 @@ export default function ProposalDetailPage() {
     }
   };
 
-  const handleDeleteProposalRecord = () => {
-    if (confirm(`Are you sure you want to permanently delete proposal for ${proposal.fullName}?`)) {
-      deleteProposal(proposalId);
-      showToast('Proposal Deleted', 'Proposal removed permanently.');
-      router.push('/proposals');
-    }
-  };
-
   return (
-    <div className="space-y-6 pb-16 animate-fade-in">
-      {/* Top Back Navigation Bar */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 sm:space-y-6 pb-16 animate-fade-in">
+      {/* Top Back & Actions Pill Navigation Bar */}
+      <div className="bg-white/95 backdrop-blur-md shadow-sm border border-slate-200/80 rounded-2xl px-4 py-2.5 flex items-center justify-between">
         <Link
           href="/proposals"
-          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-slate-900 transition-colors"
+          className="inline-flex items-center gap-2 text-xs font-bold text-slate-700 hover:text-slate-900 transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-4 h-4 text-slate-500" />
           <span>Back to All Proposals</span>
         </Link>
 
         <button
-          onClick={handleDeleteProposalRecord}
-          className="inline-flex items-center gap-1.5 text-xs text-rose-500 hover:text-rose-700 font-medium transition-colors"
+          onClick={() => setDeleteModalOpen(true)}
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-xs border border-rose-200/70 transition-all active:scale-95 shadow-xs"
         >
           <Trash2 className="w-3.5 h-3.5" />
           <span>Delete Proposal</span>
@@ -248,10 +241,10 @@ export default function ProposalDetailPage() {
       </div>
 
       {/* Main Header Banner Card */}
-      <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-center gap-5">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-rose-100 text-rose-700 font-bold text-3xl flex items-center justify-center overflow-hidden shadow-inner flex-shrink-0 border-2 border-rose-200">
+      <div className="bg-white rounded-3xl p-5 sm:p-7 border border-slate-200/80 shadow-sm space-y-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-5">
+          <div className="flex items-center gap-4 sm:gap-5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl bg-rose-100 text-rose-700 font-bold text-2xl sm:text-3xl flex items-center justify-center overflow-hidden shadow-inner flex-shrink-0 border-2 border-rose-200">
               {proposal.photoUrl ? (
                 <img src={proposal.photoUrl} alt={proposal.fullName} className="w-full h-full object-cover" />
               ) : (
@@ -261,7 +254,7 @@ export default function ProposalDetailPage() {
 
             <div>
               <div className="flex flex-wrap items-center gap-2 mb-1">
-                <h1 className="font-serif font-bold text-2xl sm:text-3xl text-slate-900">{proposal.fullName}</h1>
+                <h1 className="font-serif font-bold text-xl sm:text-2xl text-slate-900">{proposal.fullName}</h1>
                 <button
                   onClick={handleToggleShortlist}
                   className={`p-1.5 rounded-xl border transition-all ${
@@ -275,7 +268,7 @@ export default function ProposalDetailPage() {
                 </button>
               </div>
 
-              <p className="text-sm text-slate-600 font-medium">
+              <p className="text-xs sm:text-sm text-slate-600 font-medium">
                 {proposal.age} years • {proposal.location} • {proposal.profession}
               </p>
               <p className="text-xs text-slate-400 mt-0.5">
@@ -292,20 +285,20 @@ export default function ProposalDetailPage() {
               <select
                 value={proposal.status}
                 onChange={(e) => handleStatusChange(e.target.value as ProposalStatus)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold border outline-none cursor-pointer ${getStatusBadgeClass(
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold border outline-none cursor-pointer shadow-xs ${getStatusBadgeClass(
                   proposal.status
                 )}`}
               >
-                <option value="New">New</option>
-                <option value="Contacted">Contacted</option>
-                <option value="Information Pending">Information Pending</option>
-                <option value="Horoscope Pending">Horoscope Pending</option>
-                <option value="Under Consideration">Under Consideration</option>
-                <option value="Meeting Planned">Meeting Planned</option>
-                <option value="Shortlisted">Shortlisted</option>
-                <option value="On Hold">On Hold</option>
-                <option value="Rejected">Rejected</option>
-                <option value="Closed">Closed</option>
+                <option value="New" className="bg-white text-slate-900 font-medium">New</option>
+                <option value="Contacted" className="bg-white text-slate-900 font-medium">Contacted</option>
+                <option value="Information Pending" className="bg-white text-slate-900 font-medium">Info Pending</option>
+                <option value="Horoscope Pending" className="bg-white text-slate-900 font-medium">Horoscope Pending</option>
+                <option value="Under Consideration" className="bg-white text-slate-900 font-medium">Under Consideration</option>
+                <option value="Meeting Planned" className="bg-white text-slate-900 font-medium">Meeting Planned</option>
+                <option value="Shortlisted" className="bg-white text-slate-900 font-medium">Shortlisted</option>
+                <option value="On Hold" className="bg-white text-slate-900 font-medium">On Hold</option>
+                <option value="Rejected" className="bg-white text-slate-900 font-medium">Rejected</option>
+                <option value="Closed" className="bg-white text-slate-900 font-medium">Closed</option>
               </select>
             </div>
 
@@ -1206,6 +1199,41 @@ export default function ProposalDetailPage() {
           onClose={() => setRejectionModalOpen(false)}
           onSaved={reloadData}
         />
+      )}
+
+      {/* Custom Delete Proposal Confirmation Modal */}
+      {deleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 space-y-4 text-center">
+            <div className="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto border border-rose-200">
+              <Trash2 className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-serif font-bold text-slate-900 text-base">Delete Proposal Profile?</h3>
+              <p className="text-xs text-slate-500 mt-1">
+                Are you sure you want to delete proposal for <span className="font-bold text-slate-800">{proposal.fullName}</span>? This action cannot be undone.
+              </p>
+            </div>
+            <div className="flex gap-2.5 pt-2">
+              <button
+                onClick={() => setDeleteModalOpen(false)}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold text-xs transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  deleteProposal(proposalId);
+                  showToast('Proposal Deleted', 'Proposal removed permanently.');
+                  router.push('/proposals');
+                }}
+                className="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-semibold text-xs shadow-md shadow-rose-600/20 transition-colors"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

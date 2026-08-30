@@ -20,7 +20,7 @@ import {
   Search,
   Trash2,
 } from 'lucide-react';
-import { getProposals, getFollowUps, getCommunications, getHoroscope, completeFollowUp, deleteProposal } from '../services/storage';
+import { getProposals, addProposal, getFollowUps, getCommunications, getHoroscope, completeFollowUp, deleteProposal } from '../services/storage';
 import { Proposal, FollowUp } from '../types';
 import { formatDate, getStatusBadgeClass, getHoroscopeStatusBadgeClass } from '../lib/utils';
 import { useToast } from '../components/ui/Toast';
@@ -288,7 +288,8 @@ export default function Dashboard() {
         <ProposalModal
           isOpen={addProposalOpen}
           onClose={() => setAddProposalOpen(false)}
-          onSave={() => {
+          onSave={(data, primaryContact) => {
+            addProposal(data, primaryContact);
             loadDashboardData();
             showToast('Proposal Created', 'Successfully added proposal.');
           }}

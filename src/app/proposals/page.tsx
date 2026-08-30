@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import {
   getProposals,
+  addProposal,
   getSources,
   getHoroscope,
   getCommunications,
@@ -561,9 +562,15 @@ function ProposalsContent() {
           isOpen={proposalModalOpen}
           initialProposal={editingProposal}
           onClose={() => setProposalModalOpen(false)}
-          onSave={() => {
+          onSave={(data, primaryContact) => {
+            if (editingProposal) {
+              updateProposal(editingProposal.id, data);
+              showToast('Proposal Updated', 'Updated proposal details.');
+            } else {
+              addProposal(data, primaryContact);
+              showToast('Proposal Saved', 'Proposal details saved.');
+            }
             loadProposals();
-            showToast('Proposal Saved', 'Proposal details saved.');
           }}
         />
       )}
