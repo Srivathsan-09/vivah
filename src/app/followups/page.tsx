@@ -79,28 +79,34 @@ export default function FollowUpsPage() {
       </div>
 
       {/* Tabs Bar */}
-      <div className="flex border-b border-slate-200 overflow-x-auto bg-white rounded-2xl p-1 shadow-sm text-xs font-semibold scrollbar-none no-scrollbar">
-        {[
-          { id: 'overdue', label: `Overdue (${overdue.length})`, count: overdue.length, badgeColor: 'bg-rose-500 text-white' },
-          { id: 'today', label: `Due Today (${today.length})`, count: today.length, badgeColor: 'bg-amber-500 text-white' },
-          { id: 'upcoming', label: `Upcoming (${upcoming.length})`, count: upcoming.length },
-          { id: 'completed', label: `Completed (${completed.length})`, count: completed.length },
-        ].map((tab) => {
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 py-2.5 px-4 rounded-xl whitespace-nowrap transition-all flex-shrink-0 ${
-                isActive
-                  ? 'bg-slate-900 text-white shadow-sm font-bold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
-            >
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
+      <div className="relative">
+        <div className="flex border-b border-slate-200 overflow-x-auto bg-white rounded-2xl p-1 shadow-sm text-xs font-semibold scrollbar-none no-scrollbar pr-8">
+          {[
+            { id: 'overdue', label: `Overdue (${overdue.length})`, count: overdue.length, badgeColor: 'bg-rose-500 text-white' },
+            { id: 'today', label: `Due Today (${today.length})`, count: today.length, badgeColor: 'bg-amber-500 text-white' },
+            { id: 'upcoming', label: `Upcoming (${upcoming.length})`, count: upcoming.length },
+            { id: 'completed', label: `Completed (${completed.length})`, count: completed.length },
+          ].map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex items-center gap-2 py-2.5 px-4 rounded-xl whitespace-nowrap transition-all flex-shrink-0 ${
+                  isActive
+                    ? 'bg-slate-900 text-white shadow-sm font-bold'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                }`}
+              >
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+        {/* Visual Scroll Arrow Hint for Mobile */}
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white via-white/90 to-transparent rounded-r-2xl pointer-events-none flex items-center justify-end pr-1.5 text-slate-400 font-bold text-xs">
+          ›
+        </div>
       </div>
 
       {/* List Content */}

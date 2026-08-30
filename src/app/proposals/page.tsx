@@ -159,27 +159,33 @@ function ProposalsContent() {
       </div>
 
       {/* Category Tab Bar (All vs Received vs Requested) */}
-      <div className="flex border-b border-slate-200 overflow-x-auto bg-white rounded-2xl p-1 shadow-sm text-xs font-semibold scrollbar-none no-scrollbar">
-        {[
-          { id: 'All', label: 'All Proposals' },
-          { id: 'Received', label: 'Received Proposals' },
-          { id: 'Requested', label: 'Requested (Sent Out)' },
-        ].map((tab) => {
-          const isActive = typeFilter === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setTypeFilter(tab.id)}
-              className={`flex items-center gap-2 py-2.5 px-4 rounded-xl whitespace-nowrap transition-all flex-shrink-0 ${
-                isActive
-                  ? 'bg-rose-600 text-white shadow-sm font-bold'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
-            >
-              <span>{tab.label}</span>
-            </button>
-          );
-        })}
+      <div className="relative">
+        <div className="flex border-b border-slate-200 overflow-x-auto bg-white rounded-2xl p-1 shadow-sm text-xs font-semibold scrollbar-none no-scrollbar pr-8">
+          {[
+            { id: 'All', label: 'All Proposals' },
+            { id: 'Received', label: 'Received Proposals' },
+            { id: 'Requested', label: 'Requested (Sent Out)' },
+          ].map((tab) => {
+            const isActive = typeFilter === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setTypeFilter(tab.id)}
+                className={`flex items-center gap-2 py-2.5 px-4 rounded-xl whitespace-nowrap transition-all flex-shrink-0 ${
+                  isActive
+                    ? 'bg-rose-600 text-white shadow-sm font-bold'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                }`}
+              >
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
+        {/* Visual Scroll Arrow Hint for Mobile */}
+        <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white via-white/90 to-transparent rounded-r-2xl pointer-events-none flex items-center justify-end pr-1.5 text-slate-400 font-bold text-xs">
+          ›
+        </div>
       </div>
 
       {/* Filter & Search Bar Card */}

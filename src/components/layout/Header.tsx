@@ -54,16 +54,16 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
         </button>
 
         {/* Search Bar */}
-        <div className="relative flex-1">
+        <div className="relative w-32 xs:w-44 sm:w-64 md:w-80 transition-all">
           <div className="relative">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search className="w-3.5 h-3.5 sm:w-4 sm:h-4 absolute left-2.5 sm:left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => handleSearch(e.target.value)}
               onFocus={() => searchQuery.trim() && setIsSearching(true)}
-              placeholder="Search proposals..."
-              className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-slate-100/80 border border-transparent rounded-xl focus:bg-white focus:border-rose-300 focus:ring-2 focus:ring-rose-500/10 outline-none transition-all"
+              placeholder="Search..."
+              className="w-full pl-8 sm:pl-9 pr-7 sm:pr-8 py-1.5 sm:py-2 text-xs sm:text-sm bg-slate-100/80 border border-transparent rounded-xl focus:bg-white focus:border-rose-300 focus:ring-2 focus:ring-rose-500/10 outline-none transition-all"
             />
             {searchQuery && (
               <button

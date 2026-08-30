@@ -162,10 +162,10 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-white rounded-3xl max-w-2xl w-full my-8 shadow-2xl border border-slate-100 flex flex-col max-h-[90vh] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm overflow-hidden">
+      <div className="bg-white rounded-3xl max-w-2xl w-full h-[85vh] max-h-[580px] shadow-2xl border border-slate-100 flex flex-col overflow-hidden my-auto">
         {/* Modal Header */}
-        <div className="p-3.5 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+        <div className="p-3.5 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 flex-shrink-0">
           <div>
             <h2 className="font-serif font-bold text-lg sm:text-xl text-slate-900">
               {initialProposal ? 'Edit Proposal' : 'Add New Proposal'}
@@ -180,34 +180,40 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
           </button>
         </div>
 
-        {/* Multi-section Tab Bar */}
-        <div className="flex border-b border-slate-200 overflow-x-auto bg-slate-100/50 px-3 text-xs font-medium scrollbar-none no-scrollbar">
-          {[
-            { id: 'personal', label: 'Personal', icon: User },
-            { id: 'career', label: 'Education & Career', icon: GraduationCap },
-            { id: 'matrimony', label: 'Matrimony Info', icon: Globe },
-            { id: 'family', label: 'Family', icon: Users },
-            { id: 'contact', label: 'Contact', icon: Phone },
-            { id: 'status', label: 'Status', icon: Shield },
-          ].map((tab) => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center gap-1.5 py-2.5 px-3 border-b-2 whitespace-nowrap transition-colors flex-shrink-0 text-xs ${
-                  isActive
-                    ? 'border-rose-600 text-rose-600 font-semibold bg-white'
-                    : 'border-transparent text-slate-500 hover:text-slate-900'
-                }`}
-              >
-                <Icon className="w-3.5 h-3.5" />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
+        {/* Multi-section Tab Bar with scroll indicator */}
+        <div className="relative border-b border-slate-200 bg-slate-100/50 flex-shrink-0">
+          <div className="flex overflow-x-auto px-3 text-xs font-medium scrollbar-none no-scrollbar pr-8">
+            {[
+              { id: 'personal', label: 'Personal', icon: User },
+              { id: 'career', label: 'Education & Career', icon: GraduationCap },
+              { id: 'matrimony', label: 'Matrimony Info', icon: Globe },
+              { id: 'family', label: 'Family', icon: Users },
+              { id: 'contact', label: 'Contact', icon: Phone },
+              { id: 'status', label: 'Status', icon: Shield },
+            ].map((tab) => {
+              const Icon = tab.icon;
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`flex items-center gap-1.5 py-2.5 px-3 border-b-2 whitespace-nowrap transition-colors flex-shrink-0 text-xs ${
+                    isActive
+                      ? 'border-rose-600 text-rose-600 font-semibold bg-white'
+                      : 'border-transparent text-slate-500 hover:text-slate-900'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+          {/* Subtle scroll hint gradient overlay */}
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-slate-200/90 to-transparent pointer-events-none flex items-center justify-end pr-1 text-slate-500 font-bold text-xs">
+            ›
+          </div>
         </div>
 
         {/* Modal Body / Form */}
