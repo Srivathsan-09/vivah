@@ -46,7 +46,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 px-4 md:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-4 shadow-sm relative">
+    <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200 px-3 sm:px-6 md:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 shadow-sm relative">
       {/* Centered Vivah Brand Calligraphic Logo (Mobile & Desktop) */}
       <Link
         href="/"
@@ -55,12 +55,13 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
         <img
           src="/vivah-logo.png"
           alt="Vivah"
-          className="h-7 sm:h-9 md:h-10 w-auto object-contain drop-shadow-sm"
+          className="h-7 sm:h-8 md:h-9 w-auto object-contain drop-shadow-sm"
         />
       </Link>
+
       {/* Mobile Full-Width Search Bar Overlay */}
       {isMobileSearchOpen ? (
-        <div className="flex sm:hidden items-center gap-2 w-full">
+        <div className="flex sm:hidden items-center gap-2 w-full z-20 bg-white py-1">
           <div className="relative flex-1">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input
@@ -126,7 +127,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
           )}
         </div>
       ) : (
-        <div className="flex items-center gap-3 flex-1">
+        <div className="flex items-center gap-1.5 sm:gap-3 z-0">
           <button
             onClick={onOpenMobileMenu}
             className="md:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
@@ -144,8 +145,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
             <Search className="w-5 h-5" />
           </button>
 
-          {/* Desktop Search Bar */}
-          <div className="hidden sm:block relative flex-1 max-w-md">
+          {/* Desktop Search Bar (Constrained width to avoid overflowing into centered logo) */}
+          <div className="hidden sm:block relative w-44 md:w-56 lg:w-64">
             <div className="relative">
               <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
               <input
@@ -153,8 +154,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
                 value={searchQuery}
                 onChange={(e) => handleSearch(e.target.value)}
                 onFocus={() => searchQuery.trim() && setIsSearching(true)}
-                placeholder="Search proposals by name, phone, location..."
-                className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-slate-100/80 border border-transparent rounded-xl focus:bg-white focus:border-rose-300 focus:ring-2 focus:ring-rose-500/10 outline-none transition-all"
+                placeholder="Search..."
+                className="w-full pl-9 pr-8 py-1.5 text-xs sm:text-sm bg-slate-100/80 border border-transparent rounded-xl focus:bg-white focus:border-rose-300 focus:ring-2 focus:ring-rose-500/10 outline-none transition-all"
               />
               {searchQuery && (
                 <button
@@ -203,8 +204,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
         </div>
       )}
 
-      {/* Header Quick Actions */}
-      <div className="flex items-center gap-2 sm:gap-3">
+      {/* Header Quick Actions Right */}
+      <div className="flex items-center gap-1.5 sm:gap-2 z-0">
         {/* Quick Background Switcher Toggle */}
         <button
           onClick={() => {
@@ -227,30 +228,16 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
 
             window.dispatchEvent(new Event('storage'));
           }}
-          className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors flex items-center gap-1"
+          className="p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors flex items-center justify-center"
           title="Switch Matrimony Background Wallpaper"
         >
           <ImageIcon className="w-5 h-5" />
         </button>
 
-        {/* Notifications for due followups */}
-        <Link
-          href="/followups"
-          className="relative p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
-          title="Follow-ups due"
-        >
-          <Bell className="w-5 h-5" />
-          {dueFollowupsCount > 0 && (
-            <span className="absolute top-1.5 right-1.5 w-4 h-4 bg-rose-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">
-              {dueFollowupsCount}
-            </span>
-          )}
-        </Link>
-
         {/* Quick Add Proposal Button */}
         <button
           onClick={onOpenAddProposal}
-          className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-medium text-sm transition-all shadow-sm shadow-rose-900/10 active:scale-95"
+          className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-medium text-xs sm:text-sm transition-all shadow-sm shadow-rose-900/10 active:scale-95"
         >
           <Plus className="w-4 h-4" />
           <span className="hidden sm:inline">Add Proposal</span>
