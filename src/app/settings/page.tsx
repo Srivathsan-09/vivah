@@ -224,7 +224,7 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Option 1: Wedding Ritual 1 */}
           <div
             onClick={() => {
@@ -291,7 +291,40 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* Option 3: Clean Light Mode */}
+          {/* Option 3: Kanyadaan Portrait (Mobile Special) */}
+          <div
+            onClick={() => {
+              const updated = updateSettings({ bgImage: '/bg-matrimony-mobile.jpg' });
+              setSettingsState(updated);
+              showToast('Background Updated', 'Applied Kanyadaan Portrait background.');
+              window.dispatchEvent(new Event('storage'));
+            }}
+            className={`p-3 rounded-2xl border-2 cursor-pointer transition-all space-y-2 group overflow-hidden ${
+              settings.bgImage === '/bg-matrimony-mobile.jpg' || settings.bgImage === '/bg-matrimony-3.jpg'
+                ? 'border-rose-600 bg-rose-50/30 shadow-md ring-2 ring-rose-600/20'
+                : 'border-slate-200 hover:border-slate-300 bg-white'
+            }`}
+          >
+            <div className="h-28 rounded-xl overflow-hidden relative shadow-inner bg-slate-100">
+              <img src="/bg-matrimony-mobile.jpg" alt="Kanyadaan Portrait" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+              {(settings.bgImage === '/bg-matrimony-mobile.jpg' || settings.bgImage === '/bg-matrimony-3.jpg') && (
+                <div className="absolute top-2 right-2 bg-rose-600 text-white p-1 rounded-full shadow">
+                  <CheckCircle2 className="w-4 h-4" />
+                </div>
+              )}
+            </div>
+            <div className="px-1">
+              <h4 className="font-bold text-slate-900 text-xs flex items-center justify-between">
+                <span>Kanyadaan Portrait</span>
+                {(settings.bgImage === '/bg-matrimony-mobile.jpg' || settings.bgImage === '/bg-matrimony-3.jpg') && (
+                  <span className="text-[10px] text-rose-600 font-semibold">Active</span>
+                )}
+              </h4>
+              <p className="text-[11px] text-slate-500 mt-0.5">Mobile optimized portrait ritual</p>
+            </div>
+          </div>
+
+          {/* Option 4: Clean Light Mode */}
           <div
             onClick={() => {
               const updated = updateSettings({ bgImage: 'none' });

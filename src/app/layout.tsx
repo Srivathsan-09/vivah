@@ -44,12 +44,24 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-slate-100 min-h-screen text-slate-900 flex font-sans relative">
         {/* Dynamic Matrimony Background Layer */}
         {bgImage && bgImage !== 'none' && (
-          <div
-            className="fixed inset-0 pointer-events-none z-0 bg-cover bg-center bg-fixed bg-no-repeat transition-all duration-500"
-            style={{
-              backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.35), rgba(248, 250, 252, 0.45)), url('${bgImage}')`,
-            }}
-          />
+          <>
+            {/* Desktop Background */}
+            <div
+              className="hidden sm:block fixed inset-0 pointer-events-none z-0 bg-cover bg-center bg-fixed bg-no-repeat transition-all duration-500"
+              style={{
+                backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.35), rgba(248, 250, 252, 0.45)), url('${bgImage}')`,
+              }}
+            />
+            {/* Mobile Background (Optimized Portrait Kanyadaan Ritual) */}
+            <div
+              className="block sm:hidden fixed inset-0 pointer-events-none z-0 bg-cover bg-center bg-fixed bg-no-repeat transition-all duration-500"
+              style={{
+                backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.35), rgba(248, 250, 252, 0.45)), url('${
+                  bgImage === '/bg-matrimony-1.jpg' || bgImage === '/bg-matrimony-2.jpg' ? bgImage : '/bg-matrimony-mobile.jpg'
+                }')`,
+              }}
+            />
+          </>
         )}
 
         <ToastProvider>

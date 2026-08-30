@@ -140,7 +140,8 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
           onClick={() => {
             const current = localStorage.getItem('matrimony_crm_bg_image') || '/bg-matrimony-1.jpg';
             let nextBg = '/bg-matrimony-2.jpg';
-            if (current === '/bg-matrimony-2.jpg') nextBg = 'none';
+            if (current === '/bg-matrimony-2.jpg') nextBg = '/bg-matrimony-mobile.jpg';
+            else if (current === '/bg-matrimony-mobile.jpg') nextBg = 'none';
             else if (current === 'none') nextBg = '/bg-matrimony-1.jpg';
 
             localStorage.setItem('matrimony_crm_bg_image', nextBg);
