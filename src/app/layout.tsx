@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <title>Vivah — Matrimony Proposal Management System</title>
+        <title>Vivah - Matrimony Management</title>
         <meta name="description" content="Manage and track matrimonial proposals effortlessly" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

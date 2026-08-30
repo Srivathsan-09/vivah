@@ -99,7 +99,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ mobileOpen, setMobileOpen, onO
           </div>
           <div>
             <h1 className="font-serif font-bold text-base tracking-wide text-white">Vivah</h1>
-            <p className="text-[10px] text-slate-400 font-sans tracking-wider uppercase">Matrimony Proposal Manager</p>
+            <p className="text-[10px] text-slate-400 font-sans tracking-wider uppercase">Matrimony Management</p>
           </div>
         </Link>
 
