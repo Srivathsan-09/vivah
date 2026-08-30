@@ -188,84 +188,96 @@ function ProposalsContent() {
         </div>
       </div>
 
-      {/* Filter Controls Horizontal Bar */}
-      <div className="bg-white p-3 sm:p-4 rounded-3xl border border-slate-200/80 shadow-sm flex flex-wrap items-center justify-between gap-2 text-xs">
-        <div className="flex flex-wrap items-center gap-2 flex-1">
-          {/* Status Filter Dropdown (Compact) */}
-          <select
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            className="py-1.5 px-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-rose-500 outline-none font-medium text-slate-700 max-w-[140px] xs:max-w-[160px] sm:max-w-none"
-          >
-            <option value="All">All Statuses</option>
-            <option value="New">New</option>
-            <option value="Contacted">Contacted</option>
-            <option value="Information Pending">Info Pending</option>
-            <option value="Horoscope Pending">Horoscope Pending</option>
-            <option value="Under Consideration">Under Consideration</option>
-            <option value="Meeting Planned">Meeting Planned</option>
-            <option value="Shortlisted">Shortlisted</option>
-            <option value="On Hold">On Hold</option>
-            <option value="Rejected">Rejected</option>
-            <option value="Closed">Closed</option>
-          </select>
-
-          {/* Horoscope Status Filter Dropdown (Compact) */}
-          <select
-            value={horoscopeFilter}
-            onChange={(e) => setHoroscopeFilter(e.target.value)}
-            className="py-1.5 px-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:border-rose-500 outline-none font-medium text-slate-700 max-w-[140px] xs:max-w-[160px] sm:max-w-none"
-          >
-            <option value="All">All Horoscope</option>
-            <option value="Matched">Matched</option>
-            <option value="Partially Matched">Partially Matched</option>
-            <option value="Checking">Checking</option>
-            <option value="Pending">Pending</option>
-            <option value="Not Matched">Not Matched</option>
-          </select>
-
-          {/* Shortlist Toggle Button */}
-          <button
-            onClick={() => setShortlistedFilter(!shortlistedFilter)}
-            className={`flex items-center gap-1.5 py-1.5 px-2.5 rounded-xl border transition-colors text-xs ${
-              shortlistedFilter
-                ? 'bg-amber-500 text-white border-amber-600 font-semibold'
-                : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-            }`}
-          >
-            <Star className={`w-3.5 h-3.5 ${shortlistedFilter ? 'fill-current' : ''}`} />
-            <span>Shortlisted</span>
-          </button>
-
-          {(statusFilter !== 'All' || horoscopeFilter !== 'All' || sourceFilter !== 'All' || shortlistedFilter) && (
-            <button
-              onClick={() => {
-                setStatusFilter('All');
-                setHoroscopeFilter('All');
-                setSourceFilter('All');
-                setShortlistedFilter(false);
-              }}
-              className="text-slate-400 hover:text-rose-600 font-medium py-1 px-1.5 text-xs"
+      {/* Filter Controls Card (Clean 2-Line Grid Layout) */}
+      <div className="bg-white p-3.5 sm:p-4 rounded-3xl border border-slate-200/80 shadow-sm space-y-2.5">
+        {/* Line 1: All Statuses (Left) | Sort By (Right) */}
+        <div className="grid grid-cols-2 gap-2.5 items-center">
+          {/* Status Filter Dropdown */}
+          <div className="relative">
+            <select
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="w-full py-2 px-3 pr-8 text-xs bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-2xl outline-none font-semibold text-slate-800 appearance-none cursor-pointer transition-all shadow-xs focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
             >
-              Reset
-            </button>
-          )}
+              <option value="All" className="bg-white text-slate-900">All Statuses</option>
+              <option value="New" className="bg-white text-slate-900">New</option>
+              <option value="Contacted" className="bg-white text-slate-900">Contacted</option>
+              <option value="Information Pending" className="bg-white text-slate-900">Info Pending</option>
+              <option value="Horoscope Pending" className="bg-white text-slate-900">Horoscope Pending</option>
+              <option value="Under Consideration" className="bg-white text-slate-900">Under Consideration</option>
+              <option value="Meeting Planned" className="bg-white text-slate-900">Meeting Planned</option>
+              <option value="Shortlisted" className="bg-white text-slate-900">Shortlisted</option>
+              <option value="On Hold" className="bg-white text-slate-900">On Hold</option>
+              <option value="Rejected" className="bg-white text-slate-900">Rejected</option>
+              <option value="Closed" className="bg-white text-slate-900">Closed</option>
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+          </div>
+
+          {/* Sort By Dropdown */}
+          <div className="relative">
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as any)}
+              className="w-full py-2 px-3 pr-8 text-xs bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-2xl outline-none font-semibold text-slate-800 appearance-none cursor-pointer transition-all shadow-xs focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
+            >
+              <option value="recently_updated" className="bg-white text-slate-900">Sort: Recently Updated</option>
+              <option value="recently_added" className="bg-white text-slate-900">Sort: Recently Added</option>
+              <option value="name" className="bg-white text-slate-900">Sort: Name</option>
+              <option value="age" className="bg-white text-slate-900">Sort: Age</option>
+              <option value="status" className="bg-white text-slate-900">Sort: Status</option>
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+          </div>
         </div>
 
-        {/* Sort By Dropdown */}
-        <div className="flex items-center gap-1 text-xs">
-          <span className="text-slate-400">Sort:</span>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
-            className="py-1.5 px-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none font-medium text-slate-700"
-          >
-            <option value="recently_updated">Recently Updated</option>
-            <option value="recently_added">Recently Added</option>
-            <option value="name">Name</option>
-            <option value="age">Age</option>
-            <option value="status">Status</option>
-          </select>
+        {/* Line 2: All Horoscope (Left) | Shortlisted (Right) */}
+        <div className="grid grid-cols-2 gap-2.5 items-center">
+          {/* Horoscope Status Filter Dropdown */}
+          <div className="relative">
+            <select
+              value={horoscopeFilter}
+              onChange={(e) => setHoroscopeFilter(e.target.value)}
+              className="w-full py-2 px-3 pr-8 text-xs bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-2xl outline-none font-semibold text-slate-800 appearance-none cursor-pointer transition-all shadow-xs focus:ring-2 focus:ring-rose-500/20 focus:border-rose-400"
+            >
+              <option value="All" className="bg-white text-slate-900">All Horoscope</option>
+              <option value="Matched" className="bg-white text-slate-900">Matched</option>
+              <option value="Partially Matched" className="bg-white text-slate-900">Partially Matched</option>
+              <option value="Checking" className="bg-white text-slate-900">Checking</option>
+              <option value="Pending" className="bg-white text-slate-900">Pending</option>
+              <option value="Not Matched" className="bg-white text-slate-900">Not Matched</option>
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+          </div>
+
+          {/* Shortlisted Toggle Button + Reset Link */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setShortlistedFilter(!shortlistedFilter)}
+              className={`flex-1 py-2 px-3 rounded-2xl border transition-all text-xs font-semibold flex items-center justify-center gap-1.5 shadow-xs ${
+                shortlistedFilter
+                  ? 'bg-amber-500 text-white border-amber-600 shadow-amber-500/20'
+                  : 'bg-slate-50 hover:bg-slate-100/80 text-slate-800 border-slate-200'
+              }`}
+            >
+              <Star className={`w-3.5 h-3.5 ${shortlistedFilter ? 'fill-current' : ''}`} />
+              <span>Shortlisted</span>
+            </button>
+
+            {(statusFilter !== 'All' || horoscopeFilter !== 'All' || sourceFilter !== 'All' || shortlistedFilter) && (
+              <button
+                onClick={() => {
+                  setStatusFilter('All');
+                  setHoroscopeFilter('All');
+                  setSourceFilter('All');
+                  setShortlistedFilter(false);
+                }}
+                className="text-xs font-semibold text-rose-600 hover:underline px-1.5 whitespace-nowrap"
+              >
+                Reset
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
