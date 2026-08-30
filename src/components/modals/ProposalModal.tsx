@@ -725,7 +725,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
               Cancel
             </button>
 
-            {activeTab !== 'status' ? (
+            {activeTab !== 'status' && (
               <button
                 type="button"
                 onClick={() => {
@@ -733,19 +733,19 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
                   const currentIndex = tabs.indexOf(activeTab);
                   if (currentIndex < tabs.length - 1) setActiveTab(tabs[currentIndex + 1]);
                 }}
-                className="px-5 py-2 text-xs font-medium text-white bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors"
+                className="px-4 py-2 text-xs font-medium text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
               >
-                Next Step
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={(e) => handleFormSubmit(e)}
-                className="px-5 py-2 text-xs font-semibold text-white bg-rose-600 rounded-xl hover:bg-rose-500 shadow-md shadow-rose-900/20 transition-all"
-              >
-                {initialProposal ? 'Save Changes' : 'Create Proposal'}
+                Next Step →
               </button>
             )}
+
+            <button
+              type="button"
+              onClick={(e) => handleFormSubmit(e)}
+              className="px-5 py-2 text-xs font-semibold text-white bg-rose-600 rounded-xl hover:bg-rose-500 shadow-md shadow-rose-900/20 transition-all"
+            >
+              {initialProposal ? 'Save Changes' : 'Create Proposal'}
+            </button>
           </div>
         </div>
       </div>

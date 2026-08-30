@@ -117,9 +117,9 @@ function ProposalsContent() {
     <div className="space-y-6 pb-12">
       {/* Page Title & Header Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
+        <div className="bg-white/80 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/60 shadow-sm">
           <h1 className="font-serif font-bold text-2xl text-slate-900">Proposal Management</h1>
-          <p className="text-xs text-slate-500">Filter, search, and track all matrimony proposals</p>
+          <p className="text-xs font-medium text-slate-700 mt-0.5">Filter, search, and track all matrimony proposals</p>
         </div>
 
         <div className="flex items-center gap-3">

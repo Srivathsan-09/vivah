@@ -18,8 +18,9 @@ import {
   Calendar,
   Sparkles,
   Search,
+  Trash2,
 } from 'lucide-react';
-import { getProposals, getFollowUps, getCommunications, getHoroscope, completeFollowUp } from '../services/storage';
+import { getProposals, getFollowUps, getCommunications, getHoroscope, completeFollowUp, deleteProposal } from '../services/storage';
 import { Proposal, FollowUp } from '../types';
 import { formatDate, getStatusBadgeClass, getHoroscopeStatusBadgeClass } from '../lib/utils';
 import { useToast } from '../components/ui/Toast';
@@ -99,9 +100,9 @@ export default function Dashboard() {
 
       {/* Main Dashboard Layout */}
       <div className="space-y-4">
-        <div>
+        <div className="bg-white/80 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/60 shadow-sm inline-block">
           <h2 className="font-serif font-bold text-xl text-slate-900">Recent Proposals</h2>
-          <p className="text-xs text-slate-500">Recently added or updated matrimony profiles</p>
+          <p className="text-xs font-medium text-slate-700 mt-0.5">Recently added or updated matrimony profiles</p>
         </div>
 
           {recentProposals.length === 0 ? (
@@ -231,6 +232,19 @@ export default function Dashboard() {
                           title="Schedule Follow-up"
                         >
                           <Clock className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (confirm(`Delete proposal for "${prop.fullName}"?`)) {
+                              deleteProposal(prop.id);
+                              showToast('Proposal Deleted', `Removed proposal for ${prop.fullName}.`);
+                              loadDashboardData();
+                            }
+                          }}
+                          className="p-2 rounded-xl text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-colors"
+                          title="Delete Proposal"
+                        >
+                          <Trash2 className="w-4 h-4" />
                         </button>
                       </div>
                     </div>

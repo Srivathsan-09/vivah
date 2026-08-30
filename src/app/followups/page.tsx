@@ -62,9 +62,9 @@ export default function FollowUpsPage() {
   return (
     <div className="space-y-6 pb-12">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
+        <div className="bg-white/80 backdrop-blur-md px-5 py-3 rounded-2xl border border-white/60 shadow-sm">
           <h1 className="font-serif font-bold text-2xl text-slate-900">Follow-up Manager</h1>
-          <p className="text-xs text-slate-500">Never miss a planned call, meeting, or family reminder</p>
+          <p className="text-xs font-medium text-slate-700 mt-0.5">Never miss a planned call, meeting, or family reminder</p>
         </div>
 
         {proposals.length > 0 && (
