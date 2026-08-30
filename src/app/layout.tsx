@@ -65,7 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
 
         <ToastProvider>
-          <div className="flex w-full min-h-screen relative z-10">
+          <div className="flex w-full min-h-screen">
             {/* Sidebar */}
             <Sidebar
               mobileOpen={mobileMenuOpen}
@@ -74,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             />
 
             {/* Main Content Container */}
-            <div className="flex-1 flex flex-col min-w-0 min-h-screen overflow-x-hidden">
+            <div className="flex-1 flex flex-col min-w-0 min-h-screen">
               <Header
                 onOpenMobileMenu={() => setMobileMenuOpen(true)}
                 onOpenAddProposal={() => setAddProposalOpen(true)}

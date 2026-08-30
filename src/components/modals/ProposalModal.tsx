@@ -163,7 +163,7 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm overflow-hidden">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm overflow-hidden">
       <div className="bg-white rounded-3xl max-w-2xl w-full h-[85vh] max-h-[580px] shadow-2xl border border-slate-100 flex flex-col overflow-hidden my-auto">
         {/* Modal Header */}
         <div className="p-3.5 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50 flex-shrink-0">

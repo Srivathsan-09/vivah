@@ -11,7 +11,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddProposal }) => {
   return (
-    <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-200 px-3 sm:px-6 md:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 shadow-sm relative">
+    <header className="sticky top-0 z-10 bg-white/90 backdrop-blur-md border-b border-slate-200 px-3 sm:px-6 md:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 shadow-sm relative">
       {/* Left: Mobile Sidebar Toggle Menu Button */}
       <div className="flex items-center gap-1.5 sm:gap-3 z-0">
         <button
