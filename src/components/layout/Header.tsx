@@ -197,11 +197,17 @@ export const Header: React.FC<HeaderProps> = ({ onOpenMobileMenu, onOpenAddPropo
         {/* Quick Background Switcher Toggle */}
         <button
           onClick={() => {
-            const current = localStorage.getItem('matrimony_crm_bg_image') || '/bg-matrimony-1.jpg';
-            let nextBg = '/bg-matrimony-2.jpg';
-            if (current === '/bg-matrimony-2.jpg') nextBg = '/bg-matrimony-mobile.jpg';
-            else if (current === '/bg-matrimony-mobile.jpg') nextBg = 'none';
-            else if (current === 'none') nextBg = '/bg-matrimony-1.jpg';
+            const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+            const current = localStorage.getItem('matrimony_crm_bg_image') || (isMobile ? '/bg-matrimony-mobile.jpg' : '/bg-matrimony-1.jpg');
+            let nextBg = 'none';
+
+            if (isMobile) {
+              nextBg = current === '/bg-matrimony-mobile.jpg' ? 'none' : '/bg-matrimony-mobile.jpg';
+            } else {
+              if (current === '/bg-matrimony-1.jpg') nextBg = '/bg-matrimony-2.jpg';
+              else if (current === '/bg-matrimony-2.jpg') nextBg = 'none';
+              else nextBg = '/bg-matrimony-1.jpg';
+            }
 
             localStorage.setItem('matrimony_crm_bg_image', nextBg);
             const settings = JSON.parse(localStorage.getItem('matrimony_crm_settings') || '{}');

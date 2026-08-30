@@ -45,14 +45,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Dynamic Matrimony Background Layer */}
         {bgImage && bgImage !== 'none' && (
           <>
-            {/* Desktop Background */}
+            {/* Desktop Background (Landscape Wallpapers Only) */}
             <div
               className="hidden sm:block fixed inset-0 pointer-events-none z-0 bg-cover bg-center bg-fixed bg-no-repeat transition-all duration-500"
               style={{
-                backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.35), rgba(248, 250, 252, 0.45)), url('${bgImage}')`,
+                backgroundImage: `linear-gradient(to bottom, rgba(255, 255, 255, 0.35), rgba(248, 250, 252, 0.45)), url('${
+                  bgImage === '/bg-matrimony-mobile.jpg' ? '/bg-matrimony-1.jpg' : bgImage
+                }')`,
               }}
             />
-            {/* Mobile Background (Always Portrait Kanyadaan Ritual Image 4) */}
+            {/* Mobile Background (Portrait Kanyadaan Ritual Image 4 Only) */}
             <div
               className="block sm:hidden fixed inset-0 pointer-events-none z-0 bg-cover bg-center bg-fixed bg-no-repeat transition-all duration-500"
               style={{

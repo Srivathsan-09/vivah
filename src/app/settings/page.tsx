@@ -224,8 +224,8 @@ export default function SettingsPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Option 1: Wedding Ritual 1 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Option 1: Wedding Ritual 1 (Desktop Only) */}
           <div
             onClick={() => {
               const updated = updateSettings({ bgImage: '/bg-matrimony-1.jpg' });
@@ -233,7 +233,7 @@ export default function SettingsPage() {
               showToast('Background Updated', 'Applied Wedding Ritual 1 background.');
               window.dispatchEvent(new Event('storage'));
             }}
-            className={`p-3 rounded-2xl border-2 cursor-pointer transition-all space-y-2 group overflow-hidden ${
+            className={`hidden sm:block p-3 rounded-2xl border-2 cursor-pointer transition-all space-y-2 group overflow-hidden ${
               (settings.bgImage || '/bg-matrimony-1.jpg') === '/bg-matrimony-1.jpg'
                 ? 'border-rose-600 bg-rose-50/30 shadow-md ring-2 ring-rose-600/20'
                 : 'border-slate-200 hover:border-slate-300 bg-white'
@@ -254,11 +254,11 @@ export default function SettingsPage() {
                   <span className="text-[10px] text-rose-600 font-semibold">Active</span>
                 )}
               </h4>
-              <p className="text-[11px] text-slate-500 mt-0.5">Silver bowl traditional ritual</p>
+              <p className="text-[11px] text-slate-500 mt-0.5">Silver bowl traditional ritual (Desktop)</p>
             </div>
           </div>
 
-          {/* Option 2: Wedding Ceremony 2 */}
+          {/* Option 2: Wedding Ceremony 2 (Desktop Only) */}
           <div
             onClick={() => {
               const updated = updateSettings({ bgImage: '/bg-matrimony-2.jpg' });
@@ -266,7 +266,7 @@ export default function SettingsPage() {
               showToast('Background Updated', 'Applied Wedding Ceremony 2 background.');
               window.dispatchEvent(new Event('storage'));
             }}
-            className={`p-3 rounded-2xl border-2 cursor-pointer transition-all space-y-2 group overflow-hidden ${
+            className={`hidden sm:block p-3 rounded-2xl border-2 cursor-pointer transition-all space-y-2 group overflow-hidden ${
               settings.bgImage === '/bg-matrimony-2.jpg'
                 ? 'border-rose-600 bg-rose-50/30 shadow-md ring-2 ring-rose-600/20'
                 : 'border-slate-200 hover:border-slate-300 bg-white'
@@ -287,11 +287,11 @@ export default function SettingsPage() {
                   <span className="text-[10px] text-rose-600 font-semibold">Active</span>
                 )}
               </h4>
-              <p className="text-[11px] text-slate-500 mt-0.5">Toe ring floral ceremony</p>
+              <p className="text-[11px] text-slate-500 mt-0.5">Toe ring floral ceremony (Desktop)</p>
             </div>
           </div>
 
-          {/* Option 3: Kanyadaan Portrait (Mobile Special) */}
+          {/* Option 3: Kanyadaan Portrait (Mobile Only) */}
           <div
             onClick={() => {
               const updated = updateSettings({ bgImage: '/bg-matrimony-mobile.jpg' });
@@ -299,7 +299,7 @@ export default function SettingsPage() {
               showToast('Background Updated', 'Applied Kanyadaan Portrait background.');
               window.dispatchEvent(new Event('storage'));
             }}
-            className={`p-3 rounded-2xl border-2 cursor-pointer transition-all space-y-2 group overflow-hidden ${
+            className={`block sm:hidden p-3 rounded-2xl border-2 cursor-pointer transition-all space-y-2 group overflow-hidden ${
               settings.bgImage === '/bg-matrimony-mobile.jpg' || settings.bgImage === '/bg-matrimony-3.jpg'
                 ? 'border-rose-600 bg-rose-50/30 shadow-md ring-2 ring-rose-600/20'
                 : 'border-slate-200 hover:border-slate-300 bg-white'
@@ -320,11 +320,11 @@ export default function SettingsPage() {
                   <span className="text-[10px] text-rose-600 font-semibold">Active</span>
                 )}
               </h4>
-              <p className="text-[11px] text-slate-500 mt-0.5">Mobile optimized portrait ritual</p>
+              <p className="text-[11px] text-slate-500 mt-0.5">Mobile portrait ritual (Mobile)</p>
             </div>
           </div>
 
-          {/* Option 4: Clean Light Mode */}
+          {/* Option 4: Clean Light Mode (All Devices) */}
           <div
             onClick={() => {
               const updated = updateSettings({ bgImage: 'none' });
@@ -356,56 +356,6 @@ export default function SettingsPage() {
               <p className="text-[11px] text-slate-500 mt-0.5">Simple solid slate background</p>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* SECTION 2: MATRIMONY SOURCES MANAGEMENT */}
-      <div className="bg-white p-6 rounded-3xl border border-slate-200/80 shadow-sm space-y-6">
-        <div className="flex items-center gap-3 border-b border-slate-100 pb-4">
-          <div className="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center">
-            <Globe className="w-5 h-5" />
-          </div>
-          <div>
-            <h3 className="font-serif font-bold text-slate-900 text-base">Matrimony Platform Sources</h3>
-            <p className="text-xs text-slate-500">Manage sources where proposal profiles originate</p>
-          </div>
-        </div>
-
-        {/* Add Source Form */}
-        <form onSubmit={handleAddSource} className="flex gap-2">
-          <input
-            type="text"
-            required
-            value={newSourceName}
-            onChange={(e) => setNewSourceName(e.target.value)}
-            placeholder="Add custom source (e.g. Jeevansathi, Relative, Newspaper)..."
-            className="flex-1 px-4 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:border-rose-500"
-          />
-          <button
-            type="submit"
-            className="py-2 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-xs flex items-center gap-1"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add Source</span>
-          </button>
-        </form>
-
-        {/* Sources Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-          {sources.map((src) => (
-            <div key={src.id} className="p-3 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between">
-              <span className="font-semibold text-slate-800">{src.name}</span>
-              {!src.isDefault && (
-                <button
-                  onClick={() => handleDeleteSource(src.id, src.name)}
-                  className="text-slate-300 hover:text-rose-600"
-                  title="Remove Source"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
-          ))}
         </div>
       </div>
 
